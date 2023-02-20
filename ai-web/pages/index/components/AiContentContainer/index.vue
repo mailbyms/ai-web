@@ -9,6 +9,10 @@
 				{{item.prompt ? item.prompt : item.text}}
 			</view>
 		</view>
+		<view class="common-item answer loading" v-show="loading">
+			<view class="dot-flashing"></view>
+		</view>
+		
 	</view>
 </template>
 
@@ -22,9 +26,11 @@
 	} from "@/model/pages/ModelIndex"
 	interface Props {
 		list:GenerateTextList[]
+		loading:boolean
 	}
 	withDefaults(defineProps<Props>(),{
-		list: () => []
+		list: () => [],
+		loading:false
 	})
 </script>
 

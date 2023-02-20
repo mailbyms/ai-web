@@ -6,7 +6,10 @@
 	<!-- ai-position-fixed -->
 	<view :class="['ai-input-container w100 ai-display-flex ai-justify-content-space-between border-box ']">
 		<view class="question-input border-box question-padding" contenteditable="true"  id="textarea" @focus="focusInput" @blur="blurInput"></view>
-		<button class="question-send" @click="sendMsg">发送</button>
+		<button class="question-send question-common" @click="sendMsg" v-show="!loading">发送</button>
+		<view class="question-loading question-common ai-display-flex ai-align-items-center ai-justify-content-center" v-show="loading">
+			<view class="dot-flashing "></view>
+		</view>
 	</view>
 </template>
 
@@ -16,11 +19,16 @@
 		ref,
 		onMounted,
 		defineEmits,
-		nextTick
+		nextTick,
+		defineProps,
+		withDefaults
 	} from "vue";
 	import {
 		GenerateTextRequest
 	} from "@/model/pages/ModelIndex"
+	interface Props {
+		loading:boolean
+	}
 	let textarea = null;
 	onMounted(() => {
 			textarea = document.getElementById('textarea');
@@ -38,6 +46,9 @@
 				}
 			})
 			
+	})
+	withDefaults(defineProps<Props>(),{
+		loading:false
 	})
 	const state = reactive <any>({
 		prompt:''

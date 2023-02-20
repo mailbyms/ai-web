@@ -1,4 +1,5 @@
 @import "common.css";
+@import 'three-dots';
 
 //公共类
 .ai-color-primary{
@@ -33,3 +34,31 @@
 }
 
 
+
+
+.dot-flashing{
+	background-color: var(--uni-primary-color);
+	color: var(--uni-primary-color);
+	animation: dot-flashing 1s infinite linear alternate;
+	animation-delay: 0.5s;
+	&::after{
+		background-color: var(--uni-primary-color);
+		color: var(--uni-primary-color);
+		animation: dot-flashing 1s infinite alternate;
+		animation-delay: 1s;
+	}
+	&::before{
+		background-color: var(--uni-primary-color);
+		color: var(--uni-primary-color);
+		animation: dot-flashing 1s infinite alternate;
+		animation-delay: 0s;
+	}
+}
+@keyframes dot-flashing{
+	0%{
+		background-color:var(--uni-primary-color) ;
+	}
+	50%,100%{
+		background-color: rgba(64, 174, 54, 0.2);
+	}
+}

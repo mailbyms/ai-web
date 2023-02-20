@@ -1,3 +1,4 @@
+$dot-color: pink;
 .ai-content-container {
 	// max-height: calc(100vh - var(--title-height) - var(--safe-area-height));
 	// max-height: calc(100vh  - var(--safe-area-height));
@@ -26,5 +27,11 @@
 		color: #333333;
 		border-radius: 0rpx 20rpx 20rpx 20rpx;
 		background: #F7F7F7;
+	}
+	.loading {
+		width: 50rpx !important;
+		.dot-flashing{
+			margin: 0 auto;
+		}
 	}
 }

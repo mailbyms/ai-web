@@ -46,6 +46,7 @@
 	])
 	const loading = ref<boolean>(false)
 	const sendMsg = (msg:string) => {
+		loading.value = true
 		const obj = {
 			prompt:msg
 		}

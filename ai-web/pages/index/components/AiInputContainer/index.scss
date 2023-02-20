@@ -26,13 +26,19 @@
 		    content:none;
 		}
 	}
-	.question-send{
+	.question-common{
 		height: 74rpx;
 		width: 130rpx;
+	}
+	.question-send{
 		padding: 0;
 		margin: 0;
 		color: #fff;
 		font-size: var(--uni-font-size-base);
 		background-color: var(--uni-primary-color);
+	}
+	.question-loading{
+		border-radius: 10rpx;
+		background: #F7F7F7;
 	}
 }
