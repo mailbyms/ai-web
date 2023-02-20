@@ -3,11 +3,31 @@
 	模块作者：tony
 -->
 <template>
-	
+	<view class="ai-content-container border-box">
+		<view v-for="(item,index) in list" :key="index">
+			<view :class="['common-item border-box',item.prompt ? 'question':'answer' ]">
+				{{item.prompt ? item.prompt : item.text}}
+			</view>
+		</view>
+	</view>
 </template>
 
-<script>
+<script lang="ts" setup>
+	import {
+		defineProps,
+		withDefaults
+	} from "vue";
+	import {
+		GenerateTextList
+	} from "@/model/pages/ModelIndex"
+	interface Props {
+		list:GenerateTextList[]
+	}
+	withDefaults(defineProps<Props>(),{
+		list: () => []
+	})
 </script>
 
-<style>
+<style lang="scss" scoped>
+	@import "index.scss";
 </style>

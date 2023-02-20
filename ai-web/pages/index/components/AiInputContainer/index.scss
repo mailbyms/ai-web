@@ -1,0 +1,38 @@
+.ai-input-container{
+	padding: 16rpx 40rpx 58rpx;
+	border-top: 1rpx solid #ECECEC;
+	align-items: self-end;
+	bottom: 0;
+	.question-padding{
+		padding: 18rpx 0 ;
+	}
+	.question-input{
+		width: 500rpx;
+		min-height: 74rpx;
+		max-height: 146rpx;
+		padding-left: 30rpx;
+		padding-right: 30rpx;
+		background: #F8F9FA;
+		border-radius: 6rpx;
+		font-size: var(--uni-font-size-base);
+		border:unset;
+		outline: unset;
+		overflow-y: auto;
+		&:empty:before{
+			content: '请输入 '; 
+			color: #CCCCCC; 
+		}
+		&:focus:before{
+		    content:none;
+		}
+	}
+	.question-send{
+		height: 74rpx;
+		width: 130rpx;
+		padding: 0;
+		margin: 0;
+		color: #fff;
+		font-size: var(--uni-font-size-base);
+		background-color: var(--uni-primary-color);
+	}
+}

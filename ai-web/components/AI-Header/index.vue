@@ -19,7 +19,8 @@ interface Props {
 
 <style lang="scss" scoped>
 	.ai-header{
-		height: 88rpx;
+		height: var(--title-height);
+		border-bottom: 1rpx solid #ECECEC;
 		background: rgba(0,0,0,0);
 	}
 </style>
