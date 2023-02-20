@@ -1,5 +1,5 @@
 import App from './App'
-
+import Component from "./components/index"
 // #ifndef VUE3
 import Vue from 'vue'
 Vue.config.productionTip = false
@@ -14,6 +14,7 @@ app.$mount()
 import { createSSRApp } from 'vue'
 export function createApp() {
   const app = createSSRApp(App)
+  Component(app)
   return {
     app
   }

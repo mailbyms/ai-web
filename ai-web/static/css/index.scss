@@ -1,4 +1,18 @@
+@import "common.css";
+
 //公共类
 .ai-color-primary{
 	color: $uni-primary-color;
+}
+.ai-title-color{
+	color: var(--uni-title-color);
+}
+.ai-display-flex{
+	display: flex;
+}
+.ai-align-items-center{
+	align-items: center;
+}
+.ai-justify-content-center{
+	justify-content: center;
 }
