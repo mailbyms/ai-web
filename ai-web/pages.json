@@ -3,13 +3,18 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": ""
+				// "navigationBarTitleText": ""
 			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "",
+		// #ifdef  MP-WEIXIN
+		"navigationBarTitleText": "智灵AI助手",
+		// #endif
+		// #ifdef  H5
+		"navigationStyle":"custom",
+		// #endif
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},

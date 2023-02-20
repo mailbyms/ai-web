@@ -12,6 +12,8 @@
 	}
 </script>
 
-<style>
+<style  lang="scss">
 	/*每个页面公共css */
+	//全局
+	@import "@/static/css/index.scss";
 </style>
