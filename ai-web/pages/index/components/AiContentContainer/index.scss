@@ -20,6 +20,7 @@
 		word-wrap:break-word;
 	}
 	.question {
+		position: relative;
 		margin: 0 40rpx 30rpx auto;
 		color: #FFFFFF;
 		background-color: var(--uni-primary-color);
@@ -38,6 +39,24 @@
 			margin: 0 auto;
 		}
 	}
+	.add-container{
+		position: absolute;
+		left: -55rpx;
+		top: 0;
+		padding: 0 10rpx;
+		height: 100%;
+		.addImg{
+			width: 35rpx;
+			height: 35rpx;
+			background: #CCC;
+			border-radius: 50%;
+			.img{
+				width: 60%;
+				height: 60%;
+			}
+		}
+	}
+	
 }
 .ai-content-container-android{
 	max-height: calc(100vh  - var(--safe-area-height) - 38rpx);

@@ -7,6 +7,8 @@
 			loading:是否展示加在动画
 			ctrlPrintLoading:控制打印时是否显示动画
 			focusFlag:输入框状态
+			listLength:列表长度
+			@addContent:添加提问内容到输入框
 		 -->
 		<ai-content-container 
 			:list="list" 
@@ -14,17 +16,20 @@
 			:ctrlPrintLoading="ctrlPrintLoading"
 			:focusFlag="focusFlag"
 			:listLength="listLength"
+			@addContent="addContent"
 		/>
 		<!-- 
 			输入框组件
 			loading:是否展示加在动画
 			focusFlag:输入框状态
+			addData:列表添加的数据
 			@sendMsg:发送信息
 			@updateInputStatus:检测输入框状态是focus/blur
 		-->
 		<ai-input-container  
 			:loading="loading" 
 			:focusFlag="focusFlag"
+			:addData="addData"
 			@sendMsg="sendMsg"
 			@updateInputStatus="updateInputStatus"
 		/>
@@ -47,7 +52,7 @@
 	// })
 	const list = reactive<GenerateTextList[]>([
 		{
-			prompt:'您好，我想问下这份果冻橙是可以直接拿勺子吃得那种吗？'
+			prompt:'您好，我想问下这份果冻'
 		},
 		{
 			text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。'
@@ -85,6 +90,7 @@
 	 */
 	const sendMsg = (msg:string) => {
 		loading.value = true
+		addData.value = ''
 		const obj = {
 			prompt:msg
 		}
@@ -142,9 +148,13 @@
 			})
 		}
 	}
-	
 	const noScroll = (e) => {
 		e.preventDefault()
+	}
+	
+	const addData = ref<string>('')
+	const addContent = (prompt:string) => {
+		addData.value += prompt
 	}
 </script>
 

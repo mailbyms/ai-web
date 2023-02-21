@@ -20,7 +20,8 @@
 		defineEmits,
 		nextTick,
 		defineProps,
-		withDefaults
+		withDefaults,
+		watch
 	} from "vue";
 	import {
 		GenerateTextRequest
@@ -28,6 +29,7 @@
 	interface Props {
 		loading:boolean
 		focusFlag:boolean
+		addData?:string
 	}
 	let textarea = null;
 	let input = null
@@ -50,9 +52,10 @@
 				}
 			})	
 	})
-	withDefaults(defineProps<Props>(),{
+	const propsData = withDefaults(defineProps<Props>(),{
 		loading:false,
-		focusFlag:false
+		focusFlag:false,
+		addData:''
 	})
 	const state = reactive <any>({
 		prompt:''
@@ -103,6 +106,15 @@
 		inputFlag.value = false
 		emit('updateInputStatus',false)
 	}
+	
+	
+	watch(()=> propsData.addData,(val) => {
+		textarea = document.getElementById('textarea');
+		if(val){
+			textarea.innerText = textarea.innerText + val
+			state.prompt = textarea.innerText
+		} 
+	})
 </script>
 
 <style lang="scss" scoped>
