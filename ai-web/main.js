@@ -1,5 +1,6 @@
 import App from './App'
 import Component from "./components/index"
+import "@/static/font/iconfont.js"
 // #ifndef VUE3
 import Vue from 'vue'
 Vue.config.productionTip = false

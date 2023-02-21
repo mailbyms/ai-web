@@ -28,18 +28,23 @@
 	}
 
 	.answer {
-		margin: 0 auto 30rpx 40rpx;
+		margin: 0 auto 50rpx 40rpx;
 		color: #333333;
 		border-radius: 0rpx 20rpx 20rpx 20rpx;
 		background: #F7F7F7;
-		.answer-copy{
+		&-copy{
 			position: absolute;
 			left: 0;
-			bottom: -80rpx;
-			padding: 10rpx 10rpx;
+			bottom: -40rpx;
+			padding: 0rpx 10rpx;
 			border-radius: 10rpx;
 			font-size: 20rpx;
-			background: #F7F7F7;
+			.icon{
+				font-size: 36rpx;
+			}
+			&-text{
+				padding-left: 10rpx;
+			}
 		}
 	}
 	.loading {

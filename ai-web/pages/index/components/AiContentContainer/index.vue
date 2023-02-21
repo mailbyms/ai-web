@@ -18,7 +18,13 @@
 						</view>
 					</view>
 					<!-- 答案复制 -->
-					<!-- <view class="copy answer-copy" v-show="item.text">复制答案</view> -->
+					<view class="copy answer-copy ai-display-flex ai-align-items-center" v-show="item.text"
+						@click="copy(item.text)">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#icon-fuzhi"></use>
+						</svg>
+						<text class="answer-copy-text">复制答案</text>
+					</view>
 				</view>
 			</view>
 			<!-- 加载效果 -->
@@ -46,6 +52,7 @@
 	import {
 		os
 	} from "@/utils/validate"
+	import Clipboard from 'clipboard'
 	interface Props {
 		list: GenerateTextList[]
 		loading: boolean
@@ -108,6 +115,37 @@
 	 */
 	const addContent = (prompt: string) => {
 		emits('addContent', prompt)
+	}
+	/**
+	 * 复制答案
+	 * @param {string} text 答案
+	 */
+	const copy = (text: string) => {
+		console.log(text)
+		const clipboard = new Clipboard('.copy', {
+			text: function() {
+				return text
+			}
+		})
+		clipboard.on('success', (e) => {
+			// console.log(e)
+			uni.showToast({
+				title: "复制成功",
+				icon: "none"
+			})
+			// 释放内存
+			clipboard.destroy()
+		})
+		clipboard.on('error', (e) => {
+			// console.log(e)
+			// 不支持复制
+			uni.showToast({
+				title: "复制失败",
+				icon: "none"
+			})
+			// 释放内存
+			clipboard.destroy()
+		})
 	}
 </script>
 
