@@ -38,12 +38,13 @@
 			bottom: -40rpx;
 			padding: 0rpx 10rpx;
 			border-radius: 10rpx;
-			font-size: 20rpx;
+			font-size: 24rpx;
 			.icon{
-				font-size: 36rpx;
+				font-size: 44rpx;
 			}
 			&-text{
-				padding-left: 10rpx;
+				padding-top: 4rpx;
+				padding-left: 1rpx;
 			}
 		}
 	}
@@ -70,8 +71,8 @@
 			}
 		}
 	}
-	
 }
+//安卓特别适配
 .ai-content-container-android{
 	max-height: calc(100vh  - var(--safe-area-height) - 38rpx);
 	padding-bottom: 38rpx;

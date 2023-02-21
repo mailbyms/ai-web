@@ -55,7 +55,8 @@
 			prompt:'您好，我想问下这份果冻'
 		},
 		{
-			text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。'
+			text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
+			showCopy:true
 		}
 	])
 	const listLength = ref<number>(list.length)
@@ -100,7 +101,8 @@
 		let timer = null
 		let index = 1
 		list.push({
-			text:text.slice(0,index)
+			text:text.slice(0,index),
+			showCopy:false
 		})
 		listLength.value ++
 		timer = setInterval(() => {
@@ -111,6 +113,7 @@
 				timer = null
 				loading.value = false
 				ctrlPrintLoading.value = false
+				list[list.length - 1].showCopy = true
 				return
 			}
 		},100)

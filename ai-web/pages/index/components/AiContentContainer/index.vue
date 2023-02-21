@@ -3,23 +3,36 @@
 	模块作者：tony
 -->
 <template>
-	<view :class="['ai-content-container border-box',!os() ? 'ai-content-container-android':'']" id="content-container"
-		:style="{paddingTop:paddingTop}">
+	<view 
+		:class="['ai-content-container border-box',!os() ? 
+		'ai-content-container-android':'']" 
+		id="content-container"
+		:style="{paddingTop:paddingTop}"
+	>
 		<view class="content" id="content">
-			<view v-for="(item,index) in list" :key="index" :class="item.prompt ?'text-align-right':'text-align-left'">
+			<view v-for="(item,index) in list" 
+				:key="index" 
+				:class="item.prompt ?'text-align-right':'text-align-left'"
+			>
 				<view :class="['common-item border-box text-align-left',item.prompt ? 'question':'answer' ]">
 					<!-- 问题/答案 -->
 					<text>{{item.prompt ? item.prompt : item.text}}</text>
 					<!-- 加号 -->
-					<view class="add-container  ai-display-flex ai-align-items-center ai-justify-content-center"
-						@click="addContent(item.prompt)" v-show="item.prompt && !loading">
+					<view 
+						class="add-container ai-display-flex ai-align-items-center ai-justify-content-center"
+						@click="addContent(item.prompt)" 
+						v-show="item.prompt && !loading"
+					>
 						<view class="addImg ai-display-flex ai-align-items-center ai-justify-content-center">
 							<image src="@/static/img/index/add@2x.png" mode="" class="img"></image>
 						</view>
 					</view>
 					<!-- 答案复制 -->
-					<view class="copy answer-copy ai-display-flex ai-align-items-center" v-show="item.text"
-						@click="copy(item.text)">
+					<view 
+						class="copy answer-copy ai-display-flex ai-align-items-center" 
+						v-show="item.text && item.showCopy"
+						@click="copy(item.text)"
+					>
 						<svg class="icon" aria-hidden="true">
 							<use xlink:href="#icon-fuzhi"></use>
 						</svg>
@@ -32,8 +45,6 @@
 				<view class="dot-flashing"></view>
 			</view>
 		</view>
-
-
 	</view>
 </template>
 
@@ -61,20 +72,25 @@
 		listLength: number
 	}
 	const propsData = withDefaults(defineProps < Props > (), {
-		list: () => [],
-		loading: false,
-		ctrlPrintLoading: false,
-		focusFlag: false,
-		listLength: 0
+		list: () => [], //问题与答案
+		loading: false, //控制数据过渡效果
+		ctrlPrintLoading: false, //控制打印过渡效果
+		focusFlag: false, //输入框是否focus状态
+		listLength: 0 //问题与答案列表长度
 	})
-	const emits = defineEmits(['addContent'])
+	
+	
+	
+	/**
+	 * 当输入框是focus状态,滚动到页面底部
+	 * 因ios点击输入框会导致整体页面向上移,需要通过内边距移动到指定位置
+	 */
 	const paddingTop = ref < any > (null);
 	watch(
 		() => propsData.focusFlag,
 		(val) => {
 			const content = document.getElementById('content');
 			const contentContainer = document.getElementById('content-container');
-			console.log(os(), document.body.clientHeight, contentContainer.clientHeight);
 			if (val) {
 				nextTick(() => {
 					contentContainer.scrollTo({
@@ -93,7 +109,10 @@
 			}
 		}
 	)
-
+	
+	/**
+	 * 监听列表长度变化,滚动到页面底部
+	 */
 	watch(
 		() => propsData.listLength,
 		(newVal, oldVal) => {
@@ -113,6 +132,7 @@
 	 * 添加内容到输入框
 	 * @param {string} prompt
 	 */
+	const emits = defineEmits(['addContent'])
 	const addContent = (prompt: string) => {
 		emits('addContent', prompt)
 	}
@@ -121,14 +141,12 @@
 	 * @param {string} text 答案
 	 */
 	const copy = (text: string) => {
-		console.log(text)
 		const clipboard = new Clipboard('.copy', {
 			text: function() {
 				return text
 			}
 		})
-		clipboard.on('success', (e) => {
-			// console.log(e)
+		clipboard.on('success', () => {
 			uni.showToast({
 				title: "复制成功",
 				icon: "none"
@@ -136,8 +154,7 @@
 			// 释放内存
 			clipboard.destroy()
 		})
-		clipboard.on('error', (e) => {
-			// console.log(e)
+		clipboard.on('error', () => {
 			// 不支持复制
 			uni.showToast({
 				title: "复制失败",

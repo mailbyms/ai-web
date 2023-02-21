@@ -16,4 +16,5 @@ export interface GenerateTextResponse{
 export interface GenerateTextList {
 	prompt?:string //问题
 	text?:string //内容/答案
+	showCopy?:boolean //显示复制按钮
 }
