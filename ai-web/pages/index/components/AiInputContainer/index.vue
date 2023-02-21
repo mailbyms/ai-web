@@ -3,8 +3,7 @@
 	模块作者：tony
 -->
 <template>
-	<!-- ai-position-fixed -->
-	<view :class="['ai-input-container w100 ai-display-flex ai-justify-content-space-between border-box ']">
+	<view :class="['ai-input-container w100 ai-display-flex ai-justify-content-space-between border-box ai-position-fixed']" id="ai-input-container">
 		<view class="question-input border-box question-padding" contenteditable="true"  id="textarea" @focus="focusInput" @blur="blurInput"></view>
 		<button class="question-send question-common" @click="sendMsg" v-show="!loading">发送</button>
 		<view class="question-loading question-common ai-display-flex ai-align-items-center ai-justify-content-center" v-show="loading">
@@ -28,10 +27,15 @@
 	} from "@/model/pages/ModelIndex"
 	interface Props {
 		loading:boolean
+		focusFlag:boolean
 	}
 	let textarea = null;
+	let input = null
+	let defaultHeight = ref<number>(0)
 	onMounted(() => {
 			textarea = document.getElementById('textarea');
+			input = document.getElementById('ai-input-container');
+			defaultHeight.value = input.clientHeight
 			textarea.addEventListener('keydown',function(event){
 				setTimeout(() => {
 					state.prompt = textarea.innerText
@@ -44,17 +48,19 @@
 					event.preventDefault() // 阻止浏览器默认换行操作
 					return false
 				}
-			})
-			
+			})	
 	})
 	withDefaults(defineProps<Props>(),{
-		loading:false
+		loading:false,
+		focusFlag:false
 	})
 	const state = reactive <any>({
 		prompt:''
 	})
-	const emit = defineEmits(['sendMsg'])
+	const emit = defineEmits(['sendMsg','updateInputStatus'])
 	const sendMsg = () => {
+		textarea = document.getElementById('textarea');
+		state.prompt = textarea.innerText
 		if( state.prompt){
 			console.log('发送数据', state.prompt)
 			textarea.innerHTML = ''
@@ -62,6 +68,10 @@
 			state.prompt = ''
 			return
 		}
+		uni.showToast({
+			title:'请输入内容哟~',
+			icon:'none'
+		})
 		
 	}
 	const textareaRange = (el) => {
@@ -86,9 +96,12 @@
 	const inputFlag = ref<boolean>(false)
 	const focusInput = () => {
 		inputFlag.value = true
+		emit('updateInputStatus',true)
+		
 	}
 	const blurInput = () => {
 		inputFlag.value = false
+		emit('updateInputStatus',false)
 	}
 </script>
 

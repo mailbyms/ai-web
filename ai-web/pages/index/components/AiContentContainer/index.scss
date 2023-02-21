@@ -1,14 +1,18 @@
-$dot-color: pink;
 .ai-content-container {
-	// max-height: calc(100vh - var(--title-height) - var(--safe-area-height));
-	// max-height: calc(100vh  - var(--safe-area-height));
-	height: calc(100vh  - var(--safe-area-height));
+	max-height: calc(100vh  - var(--safe-area-height) + 15rpx);
+	width: 100%;
 	padding-top: 20rpx;
 	overflow-y: auto;
 	background-color: #fff;
-	.common-item {
+	position: sticky;
+	top: 0;
+	.content{
 		height: auto;
-		padding: 22rpx 40rpx 30rpx;
+	}
+	.common-item {
+		display: inline-block;
+		height: auto;
+		padding: 22rpx 40rpx;
 		max-width: 570rpx;
 		font-size: var(--uni-font-size-base);
 		line-height: 42rpx;
@@ -34,4 +38,8 @@ $dot-color: pink;
 			margin: 0 auto;
 		}
 	}
+}
+.ai-content-container-android{
+	max-height: calc(100vh  - var(--safe-area-height) - 38rpx);
+	padding-bottom: 38rpx;
 }

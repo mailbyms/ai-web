@@ -1,8 +1,10 @@
 .ai-input-container{
-	padding: 16rpx 40rpx 58rpx;
+	padding: 16rpx 40rpx 38rpx;
 	border-top: 1rpx solid #ECECEC;
 	align-items: self-end;
+	z-index: 99;
 	bottom: 0;
+	background-color: #fff;
 	.question-padding{
 		padding: 18rpx 0 ;
 	}
