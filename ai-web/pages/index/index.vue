@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-	import {ref,reactive,onMounted,nextTick} from "vue";
+	import {ref,reactive,nextTick} from "vue";
 	import {
 		GenerateTextRequest,GenerateTextList
 	} from "@/model/pages/ModelIndex"
@@ -56,28 +56,7 @@
 		},
 		{
 			text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。'
-		},
-		// {
-		// 	prompt:'您好，我想问下这份果冻橙是可以直接拿勺子吃得那种吗？'
-		// },
-		// {
-		// 	prompt:'您好，我想问下这份果冻橙是可以直接拿勺子吃得那种吗？'
-		// },
-		// {
-		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。'
-		// },
-		// {
-		// 	prompt:'您好，我想问下这份果冻橙是可以直接拿勺子吃得那种吗？'
-		// },
-		// {
-		// 	prompt:'您好，我想问下这份果冻橙是可以直接拿勺子吃得那种吗？'
-		// },
-		// {
-		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。'
-		// },
-		// {
-		// 	prompt:'您好，我想问下这份果冻橙是可以直接拿勺子吃得那种吗？'
-		// }
+		}
 	])
 	const listLength = ref<number>(list.length)
 	//控制过渡效果
@@ -148,7 +127,7 @@
 			})
 		}
 	}
-	const noScroll = (e) => {
+	const noScroll = (e:any) => {
 		e.preventDefault()
 	}
 	

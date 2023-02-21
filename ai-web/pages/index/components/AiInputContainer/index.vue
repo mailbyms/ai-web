@@ -18,7 +18,6 @@
 		ref,
 		onMounted,
 		defineEmits,
-		nextTick,
 		defineProps,
 		withDefaults,
 		watch
@@ -48,6 +47,7 @@
 				} else if (event.keyCode === 13) {
 					//enter
 					event.preventDefault() // 阻止浏览器默认换行操作
+					sendMsg()
 					return false
 				}
 			})	

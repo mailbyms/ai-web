@@ -10,6 +10,7 @@
 		height: auto;
 	}
 	.common-item {
+		position: relative;
 		display: inline-block;
 		height: auto;
 		padding: 22rpx 40rpx;
@@ -20,7 +21,6 @@
 		word-wrap:break-word;
 	}
 	.question {
-		position: relative;
 		margin: 0 40rpx 30rpx auto;
 		color: #FFFFFF;
 		background-color: var(--uni-primary-color);
@@ -32,6 +32,15 @@
 		color: #333333;
 		border-radius: 0rpx 20rpx 20rpx 20rpx;
 		background: #F7F7F7;
+		.answer-copy{
+			position: absolute;
+			left: 0;
+			bottom: -80rpx;
+			padding: 10rpx 10rpx;
+			border-radius: 10rpx;
+			font-size: 20rpx;
+			background: #F7F7F7;
+		}
 	}
 	.loading {
 		width: 50rpx !important;
