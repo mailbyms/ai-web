@@ -33,15 +33,13 @@
 						v-show="item.text && item.showCopy"
 						@click="copy(item.text)"
 					>
-						<svg class="icon" aria-hidden="true">
-							<use xlink:href="#icon-fuzhi"></use>
-						</svg>
+						<img src="@/static/img/index/copy.png" class="copy-img">
 						<text class="answer-copy-text">复制答案</text>
 					</view>
 				</view>
 			</view>
 			<!-- 加载效果 -->
-			<view class="common-item answer loading" v-show="loading && !ctrlPrintLoading">
+			<view class="common-item answer loading" v-if="loading && !ctrlPrintLoading">
 				<view class="dot-flashing"></view>
 			</view>
 		</view>
@@ -63,7 +61,6 @@
 	import {
 		os
 	} from "@/utils/validate"
-	import Clipboard from 'clipboard'
 	interface Props {
 		list: GenerateTextList[]
 		loading: boolean
@@ -89,6 +86,7 @@
 	watch(
 		() => propsData.focusFlag,
 		(val) => {
+			// #ifdef  H5
 			const content = document.getElementById('content');
 			const contentContainer = document.getElementById('content-container');
 			if (val) {
@@ -107,6 +105,7 @@
 			} else {
 				paddingTop.value = null
 			}
+			// #endif
 		}
 	)
 	
@@ -116,6 +115,7 @@
 	watch(
 		() => propsData.listLength,
 		(newVal, oldVal) => {
+			// #ifdef  H5
 			const content = document.getElementById('content');
 			const contentContainer = document.getElementById('content-container');
 			if (newVal > oldVal) {
@@ -126,6 +126,7 @@
 					});
 				})
 			}
+			// #endif
 		}
 	)
 	/**
@@ -141,27 +142,20 @@
 	 * @param {string} text 答案
 	 */
 	const copy = (text: string) => {
-		const clipboard = new Clipboard('.copy', {
-			text: function() {
-				return text
+		 uni.setClipboardData({
+		      data: text,
+		      success () {
+		       uni.showToast({
+		        title: "复制成功",
+		        icon:'none'
+		       })
+		    },
+			fail() {
+				uni.showToast({
+				 title: "复制失败",
+				 icon:'none'
+				})
 			}
-		})
-		clipboard.on('success', () => {
-			uni.showToast({
-				title: "复制成功",
-				icon: "none"
-			})
-			// 释放内存
-			clipboard.destroy()
-		})
-		clipboard.on('error', () => {
-			// 不支持复制
-			uni.showToast({
-				title: "复制失败",
-				icon: "none"
-			})
-			// 释放内存
-			clipboard.destroy()
 		})
 	}
 </script>

@@ -35,12 +35,13 @@
 		&-copy{
 			position: absolute;
 			left: 0;
-			bottom: -40rpx;
-			padding: 0rpx 10rpx;
+			bottom: -45rpx;
+			padding: 0rpx 10rpx 0rpx 0rpx;
 			border-radius: 10rpx;
 			font-size: 24rpx;
-			.icon{
-				font-size: 44rpx;
+			.copy-img{
+				width: 48rpx;
+				height: 48rpx;
 			}
 			&-text{
 				padding-top: 4rpx;

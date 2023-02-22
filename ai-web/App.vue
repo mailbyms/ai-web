@@ -13,14 +13,6 @@
 </script>
 
 <style  lang="scss">
-	// #app{
-	// 	background-color: orange;
-	// 	height: 600rpx;
-	// 	position: fixed;
-	// 	// top: 0;
-	// 	bottom: 0;
-	// 	overflow: hidden;
-	// }
 	/*每个页面公共css */
 
 	//全局

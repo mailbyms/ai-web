@@ -4,9 +4,10 @@
 -->
 <template>
 	<view 
-		:class="['ai-input-container w100 ai-display-flex ai-justify-content-space-between border-box ai-position-fixed']" 		   id="ai-input-container"
+		:class="['ai-input-container w100 ai-display-flex ai-justify-content-space-between border-box ai-position-fixed']" id="ai-input-container"
 	>
 		<!-- 文本输入框 -->
+		// #ifdef  H5
 		<view 
 			class="question-input border-box question-padding" 
 			contenteditable="true" 
@@ -15,6 +16,17 @@
 			@blur="blurInput"
 		>
 		</view>
+		// #endif
+		// #ifdef MP-WEIXIN
+		<textarea 
+		class="question-input border-box question-padding" 
+			:value="state.prompt" 
+			placeholder="请输入" 
+			confirm-type="done" 
+			@focus="focusInput" 
+			@blur="blurInput"
+		/>
+		// #endif
 		<button 
 			class="question-send question-common" 
 			@click="sendMsg" 
@@ -61,6 +73,7 @@
 	 *监听输入框状态 
 	 */
 	const textareaListen = () => {
+		// #ifdef  H5
 		textarea = document.getElementById('textarea');
 		input = document.getElementById('ai-input-container');
 		defaultHeight.value = input.clientHeight
@@ -78,6 +91,7 @@
 				return false
 			}
 		})	
+		// #endif
 	}
 	
 	const propsData = withDefaults(defineProps<Props>(),{
@@ -148,11 +162,13 @@
 	 * 监听列表中点击点击的按钮,回显到输入框
 	 */
 	watch(()=> propsData.addData,(val) => {
+		// #ifdef  H5
 		textarea = document.getElementById('textarea');
 		if(val){
 			textarea.innerText = textarea.innerText + val
 			state.prompt = textarea.innerText
 		} 
+		// #endif
 	})
 </script>
 
