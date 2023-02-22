@@ -19,10 +19,11 @@
 		// #endif
 		// #ifdef MP-WEIXIN
 		<textarea 
-		class="question-input border-box question-padding" 
+			class="question-input border-box question-padding" 
 			:value="state.prompt" 
 			placeholder="请输入" 
 			confirm-type="done" 
+			:adjust-position="false"
 			@focus="focusInput" 
 			@blur="blurInput"
 		/>

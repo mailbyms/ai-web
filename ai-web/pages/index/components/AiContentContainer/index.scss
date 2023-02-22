@@ -55,6 +55,21 @@
 			margin: 0 auto;
 		}
 	}
+	.title{
+		display: flex;
+		max-width: 100%;
+		margin-bottom: 30rpx;
+		border-radius: 20rpx;
+		text-align: center;
+		&-text{
+			height: 56rpx;
+			margin-right: 5rpx;
+		}
+		&-img{
+			width: 56rpx;
+			height: 56rpx;
+		}
+	}
 	.add-container{
 		position: absolute;
 		left: -55rpx;

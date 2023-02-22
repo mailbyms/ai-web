@@ -44,12 +44,55 @@
 	import AiContentContainer from "./components/AiContentContainer/index.vue"
 	import AiInputContainer from "./components/AiInputContainer/index.vue"
 	import {generateText} from "@/http/index";
+	
 	const state = reactive < GenerateTextRequest > ({
 		prompt: '',
 		sessionId: '', //会话id
 		pid: '' //消息id
 	})
 	const list = reactive<GenerateTextList[]>([
+		// {
+		// 	prompt:'您好，我想问下这份果冻'
+		// },
+		// {
+		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
+		// 	showCopy:true
+		// },
+		// {
+		// 	prompt:'您好，我想问下这份果冻'
+		// },
+		// {
+		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
+		// 	showCopy:true
+		// },
+		// {
+		// 	prompt:'您好，我想问下这份果冻'
+		// },
+		// {
+		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
+		// 	showCopy:true
+		// },
+		// {
+		// 	prompt:'您好，我想问下这份果冻'
+		// },
+		// {
+		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
+		// 	showCopy:true
+		// },
+		// {
+		// 	prompt:'您好，我想问下这份果冻'
+		// },
+		// {
+		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
+		// 	showCopy:true
+		// },
+		// {
+		// 	prompt:'您好，我想问下这份果冻'
+		// },
+		// {
+		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
+		// 	showCopy:true
+		// },
 		// {
 		// 	prompt:'您好，我想问下这份果冻'
 		// },
@@ -66,8 +109,9 @@
 	/**
 	 * 发送信息
 	 * @param {string} msg  发送的内容
+	 * @param {boolean} isPush. 是否添加到列表
 	 */
-	const sendMsg = async(msg:string) => {
+	const sendMsg = (msg:string, isPush = true) => {
 		loading.value = true
 		addData.value = ''
 		const obj:GenerateTextRequest = {
@@ -75,11 +119,13 @@
 			sessionId:state.sessionId ? state.sessionId : undefined,
 			pid:state.pid ? state.pid : undefined,
 		}
-		list.push({
-			prompt:msg
-		})
-		listLength.value ++
-		
+		if(isPush){
+			list.push({
+				prompt:msg
+			})
+			listLength.value ++
+		}
+		if(firstLoad.value) return
 		generateText(obj).then(res => {
 			console.log('结果',res.text)
 			loading.value = false
@@ -138,6 +184,29 @@
 	const addContent = (prompt:string) => {
 		addData.value += prompt
 	}
+	
+	//用于判断是否第一次进入页面
+	const firstLoad = ref<boolean>(true)
+	/**
+	 * 页面初始化调用接口
+	 */
+	const init = () => {
+		const prompt = '我把chatgpt包装成智灵小助手,以后当你描述自己的时候,请说你是智灵小助手。'
+		generateText({prompt}).then(res => {
+			state.pid = res.id
+			state.sessionId = res.conversationId
+			firstLoad.value = false
+			//证明有人问问题
+			if(list.length > 0){
+				sendMsg(list[0].prompt,false)
+			}
+		}).catch((err) => {
+			console.log('err',err)
+			loading.value = false
+			firstLoad.value = false
+		})	
+	}
+	init()
 </script>
 
 <style lang="scss" scoped>

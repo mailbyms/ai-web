@@ -10,6 +10,10 @@
 		:style="{paddingTop:paddingTop}"
 	>
 		<view class="content" id="content">
+			<view class="common-item border-box title ai-align-items-center ai-justify-content-center">
+				<text class="title-text ai-align-items-center ai-display-flex">我是智灵小助手，欢迎找我聊天呀 </text>
+				<img src="@/static/img/index/smile.png" class="title-img"/>
+			</view>
 			<view v-for="(item,index) in list" 
 				:key="index" 
 				:class="item.prompt ?'text-align-right':'text-align-left'"
@@ -157,6 +161,40 @@
 				})
 			}
 		})
+	}
+	
+	
+	//
+	watch(() => propsData.list,(newVal,oldVal) => {
+		// console.log(newVal[newVal.length - 1]);
+		// const content = document.getElementById('content');
+		// const contentContainer = document.getElementById('content-container');
+		if(newVal[newVal.length - 1].text){
+			// console.log('打印',newVal)
+			scrollToBottom()
+		}
+	},
+	{
+		deep:true
+	}
+	)
+	
+   /**
+	* 滚动到底部
+    */
+	const scrollToBottom = () => {
+		const content = document.getElementById('content');
+		const contentContainer = document.getElementById('content-container');
+		const contentHeight = content.clientHeight
+		const contentContainerHeight = contentContainer.scrollTop + contentContainer.clientHeight
+		if(contentContainerHeight - contentHeight < 100){
+			nextTick(() => {
+				contentContainer.scrollTo({
+					top: content.offsetHeight,
+					behavior: "smooth", //  smooth(平滑滚动),instant(瞬间滚动),默认auto
+				});
+			})
+		}
 	}
 </script>
 

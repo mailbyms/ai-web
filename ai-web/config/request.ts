@@ -36,7 +36,6 @@ const request = <T>(url:string, data:any, method: "OPTIONS" | "GET" | "HEAD" | "
 	    // #ifdef  MP-WEIXIN
 	   apiUrl = `${baseUrl}${url}?api_key=${api_key}`
 	    // #endif
-		console.log(apiUrl)
     uni.request({
       url: apiUrl,
       data: data,

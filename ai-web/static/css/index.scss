@@ -1,6 +1,9 @@
 @import "common.scss";
 @import 'three-dots';
 
+*{
+	line-height: 1;
+}
 //公共类
 .ai-color-primary{
 	color: $uni-primary-color;
