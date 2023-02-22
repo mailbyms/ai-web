@@ -14,7 +14,7 @@ yarn / npm install
 # 主要目录文件介绍
 | 目录/文件    | 	描述    |
 | ------------- | ------------ |
-| api | 接口位置 |
+| http | 接口位置 |
 | components      | 全局组件 |
 | config   | 公共配置项    |
 | declare    | 声明文件 |

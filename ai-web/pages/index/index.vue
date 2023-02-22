@@ -41,23 +41,22 @@
 	import {
 		GenerateTextRequest,GenerateTextList
 	} from "@/model/pages/ModelIndex"
-	import { onLoad } from '@dcloudio/uni-app'
 	import AiContentContainer from "./components/AiContentContainer/index.vue"
 	import AiInputContainer from "./components/AiInputContainer/index.vue"
-	import {generateText} from "@/api/index.ts"
-	// const state = reactive < GenerateTextRequest > ({
-	// 	prompt: '',
-	// 	sessionId: '', //会话id
-	// 	pid: '' //消息id
-	// })
+	import {generateText} from "@/http/index";
+	const state = reactive < GenerateTextRequest > ({
+		prompt: '',
+		sessionId: '', //会话id
+		pid: '' //消息id
+	})
 	const list = reactive<GenerateTextList[]>([
-		{
-			prompt:'您好，我想问下这份果冻'
-		},
-		{
-			text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
-			showCopy:true
-		}
+		// {
+		// 	prompt:'您好，我想问下这份果冻'
+		// },
+		// {
+		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
+		// 	showCopy:true
+		// }
 	])
 	const listLength = ref<number>(list.length)
 	//控制过渡效果
@@ -68,28 +67,29 @@
 	 * 发送信息
 	 * @param {string} msg  发送的内容
 	 */
-	const sendMsg = (msg:string) => {
+	const sendMsg = async(msg:string) => {
 		loading.value = true
 		addData.value = ''
-		const obj = {
-			prompt:msg
+		const obj:GenerateTextRequest = {
+			prompt:msg,
+			sessionId:state.sessionId ? state.sessionId : undefined,
+			pid:state.pid ? state.pid : undefined,
 		}
-		// generateText(obj).then(res => {
-		// 	console.log('结果',res)
-		// loading.value = false
-		// }).catch((err) => {
-		// 	console.log('err',err)
-		// loading.value = false
-		// })
 		list.push({
 			prompt:msg
 		})
 		listLength.value ++
-		const text = '您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。';
-		const textLen = text.length
-		setTimeout(() => {
-			ctrlPrint(text,textLen)
-		},1000)
+		
+		generateText(obj).then(res => {
+			console.log('结果',res.text)
+			loading.value = false
+			ctrlPrint(res.text,res.text.length)
+			state.pid = res.id
+			state.sessionId = res.conversationId
+		}).catch((err) => {
+			console.log('err',err)
+			loading.value = false
+		})	
 	}
 	/**
 	 * 控制打印

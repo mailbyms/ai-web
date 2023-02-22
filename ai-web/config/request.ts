@@ -5,15 +5,15 @@ let baseUrl = "";
 let api_key = ""
 switch (env) {
   case 'dev':
-    baseUrl = "https://193.112.137.199:9081/ai200" //外测
+    baseUrl = "http://129.226.90.195:3000" //外测
 	api_key = 'eoJKTi3A47iVdh3a8VFQs8DghBigPRXh2TPEHmaH'
     break;
   case 'pred':
-    baseUrl = "https://193.112.137.199:9081/ai200" //预发布
+    baseUrl = "http://129.226.90.195:3000" //预发布
 	api_key = 'eoJKTi3A47iVdh3a8VFQs8DghBigPRXh2TPEHmaH'
     break;
   case 'pro':
-    baseUrl = "https://193.112.137.199:9081/ai200" //正式服
+    baseUrl = "http://129.226.90.195:3000" //正式服
 	api_key = 'eoJKTi3A47iVdh3a8VFQs8DghBigPRXh2TPEHmaH'
     break;
 }
@@ -29,8 +29,16 @@ switch (env) {
  */
 const request = <T>(url:string, data:any, method: "OPTIONS" | "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "TRACE" | "CONNECT" | undefined,contentType = 'application/json;charset=utf-8'):Promise<T> => {
   return new Promise<T>((resolve, reject) => {
+	  let apiUrl = ''
+	  // #ifdef  H5
+		apiUrl = `${url}?api_key=${api_key}`
+	   // #endif
+	    // #ifdef  MP-WEIXIN
+	   apiUrl = `${baseUrl}${url}?api_key=${api_key}`
+	    // #endif
+		console.log(apiUrl)
     uni.request({
-      url: `${baseUrl}${url}?api_key=${api_key}`,
+      url: apiUrl,
       data: data,
       method: method,
       header: {
@@ -64,6 +72,7 @@ const post = <T>(url:string, data:any, contentType?) => {
 }
 
 export  {
+  request,
   post,
   baseUrl,
 }

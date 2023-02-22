@@ -24,7 +24,7 @@
 						v-show="item.prompt && !loading"
 					>
 						<view class="addImg ai-display-flex ai-align-items-center ai-justify-content-center">
-							<image src="@/static/img/index/add@2x.png" mode="" class="img"></image>
+							<img src="@/static/img/index/add.png" mode="" class="img" />
 						</view>
 					</view>
 					<!-- 答案复制 -->

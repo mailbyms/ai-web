@@ -1,0 +1,1 @@
+declare module '@dcloudio/vite-plugin-uni'
