@@ -16,6 +16,7 @@
 			:ctrlPrintLoading="ctrlPrintLoading"
 			:focusFlag="focusFlag"
 			:listLength="listLength"
+			:inputHeight="inputHeight"
 			@addContent="addContent"
 		/>
 		<!-- 
@@ -25,6 +26,7 @@
 			addData:列表添加的数据
 			@sendMsg:发送信息
 			@updateInputStatus:检测输入框状态是focus/blur
+			@getInputHeight:获取键盘高度
 		-->
 		<ai-input-container  
 			:loading="loading" 
@@ -32,6 +34,7 @@
 			:addData="addData"
 			@sendMsg="sendMsg"
 			@updateInputStatus="updateInputStatus"
+			@getInputHeight="getInputHeight"
 		/>
 	</view>
 </template>
@@ -99,6 +102,13 @@
 		// {
 		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
 		// 	showCopy:true
+		// },
+		// {
+		// 	prompt:'您好，我想问下这份果冻'
+		// },
+		// {
+		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。111',
+		// 	showCopy:true
 		// }
 	])
 	const listLength = ref<number>(list.length)
@@ -136,6 +146,15 @@
 			console.log('err',err)
 			loading.value = false
 		})	
+		
+		
+		// loading.value = false
+		// let res = {
+		// 	text:'阿达大手大脚哭了多久啊看了几点开链接阿斯科利贷记卡手机的开机啊是肯德基卡设计大赛的阿达大手大脚哭了多久啊看了几点开链接阿斯科利贷记卡手机的开机啊是肯德基卡设计大赛的阿达大手大脚哭了多久啊看了几点开链接阿斯科利贷记卡手机的开机啊是肯德基卡设计大赛的阿达大手大脚哭了多久啊看了几点开链接阿斯科利贷记卡手机的开机啊是肯德基卡设计大赛的'
+		// }
+		// ctrlPrint(res.text,res.text.length)
+		// state.pid = res.id
+		// state.sessionId = res.conversationId
 	}
 	/**
 	 * 控制打印
@@ -186,7 +205,7 @@
 	}
 	
 	//用于判断是否第一次进入页面
-	const firstLoad = ref<boolean>(true)
+	const firstLoad = ref<boolean>(false)
 	/**
 	 * 页面初始化调用接口
 	 */
@@ -207,6 +226,11 @@
 		})	
 	}
 	init()
+	
+	const inputHeight = ref<number>(0)
+	const getInputHeight = (height:number) => {
+		inputHeight.value = height
+	}
 </script>
 
 <style lang="scss" scoped>

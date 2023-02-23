@@ -8,8 +8,10 @@
 		'ai-content-container-android':'']" 
 		id="content-container"
 		:style="{paddingTop:paddingTop}"
+		@touchmove="changeTouchStatus(true)"
+		@touchend="changeTouchStatus(false)"
 	>
-		<view class="content" id="content">
+		<scroll-view class="content" id="content" :scroll-y="scrollY" @scroll="scroll" :scroll-top="scrollTop" @scrolltolower="scrolltolower" :lower-threshold="lowerThreshold">
 			<view class="common-item border-box title ai-align-items-center ai-justify-content-center">
 				<text class="title-text ai-align-items-center ai-display-flex">我是智灵小助手，欢迎找我聊天呀 </text>
 				<img src="@/static/img/index/smile.png" class="title-img"/>
@@ -46,7 +48,7 @@
 			<view class="common-item answer loading" v-if="loading && !ctrlPrintLoading">
 				<view class="dot-flashing"></view>
 			</view>
-		</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -71,17 +73,19 @@
 		ctrlPrintLoading: boolean
 		focusFlag: boolean
 		listLength: number
+		inputHeight:number
 	}
 	const propsData = withDefaults(defineProps < Props > (), {
 		list: () => [], //问题与答案
 		loading: false, //控制数据过渡效果
 		ctrlPrintLoading: false, //控制打印过渡效果
 		focusFlag: false, //输入框是否focus状态
-		listLength: 0 //问题与答案列表长度
+		listLength: 0 ,//问题与答案列表长度
+		inputHeight:0 //键盘高度
 	})
 	
-	
-	
+	const scrollTop = ref<number>(0)
+	const scrollY = ref<boolean>(true)
 	/**
 	 * 当输入框是focus状态,滚动到页面底部
 	 * 因ios点击输入框会导致整体页面向上移,需要通过内边距移动到指定位置
@@ -91,20 +95,20 @@
 		() => propsData.focusFlag,
 		(val) => {
 			// #ifdef  H5
-			const content = document.getElementById('content');
 			const contentContainer = document.getElementById('content-container');
 			if (val) {
-				nextTick(() => {
-					contentContainer.scrollTo({
-						top: content.offsetHeight,
-						behavior: "smooth", //  smooth(平滑滚动),instant(瞬间滚动),默认auto
-					});
-				})
+				scrollToBottom()
+				setTimeout(() => {
+					scrollY.value = false
+				},50)
+			}else {
+				scrollY.value = true
 			}
 			if (val && os()) {
+					
 				if (document.body.clientHeight > contentContainer.clientHeight && contentContainer.clientHeight !==
 					0) {
-					paddingTop.value = document.body.clientHeight - contentContainer.clientHeight + 'px'
+					paddingTop.value = document.body.clientHeight - contentContainer.clientHeight  - propsData.inputHeight + 'px'
 				}
 			} else {
 				paddingTop.value = null
@@ -120,15 +124,8 @@
 		() => propsData.listLength,
 		(newVal, oldVal) => {
 			// #ifdef  H5
-			const content = document.getElementById('content');
-			const contentContainer = document.getElementById('content-container');
 			if (newVal > oldVal) {
-				nextTick(() => {
-					contentContainer.scrollTo({
-						top: content.offsetHeight,
-						behavior: "smooth", //  smooth(平滑滚动),instant(瞬间滚动),默认auto
-					});
-				})
+				scrollToBottom()
 			}
 			// #endif
 		}
@@ -165,13 +162,17 @@
 	
 	
 	//
-	watch(() => propsData.list,(newVal,oldVal) => {
-		// console.log(newVal[newVal.length - 1]);
-		// const content = document.getElementById('content');
-		// const contentContainer = document.getElementById('content-container');
-		if(newVal[newVal.length - 1].text){
-			// console.log('打印',newVal)
+	watch(() => propsData.list,(newVal) => {
+		if(newVal[newVal.length - 1].text   && lower.value && !touchStatus.value){
+			// console.log('打印','scrollToBottom')
+			const answerList = document.querySelectorAll('.text-align-left');
+			const lastAnswer = answerList[answerList.length - 1]
+			// console.log(lastAnswer.clientHeight)
+			if(lastAnswer.clientHeight > 50){
+					lowerThreshold.value = lastAnswer.clientHeight
+			}
 			scrollToBottom()
+			
 		}
 	},
 	{
@@ -183,18 +184,36 @@
 	* 滚动到底部
     */
 	const scrollToBottom = () => {
+		const scrollContent = document.querySelector('.uni-scroll-view-content');
+		 nextTick(() => {
+			scrollTop.value = scrollContent.scrollHeight + 1 + Math.random()
+		})
+	}
+	const lower = ref<boolean>(false)
+	const scroll = (status:any) => {
 		const content = document.getElementById('content');
-		const contentContainer = document.getElementById('content-container');
-		const contentHeight = content.clientHeight
-		const contentContainerHeight = contentContainer.scrollTop + contentContainer.clientHeight
-		if(contentContainerHeight - contentHeight < 100){
-			nextTick(() => {
-				contentContainer.scrollTo({
-					top: content.offsetHeight,
-					behavior: "smooth", //  smooth(平滑滚动),instant(瞬间滚动),默认auto
-				});
-			})
+		if(status.detail.scrollHeight - status.detail.scrollTop - content.offsetHeight > lowerThreshold.value){
+			lower.value = false
+		}else {
+			lower.value = true
+			if(propsData.ctrlPrintLoading){
+				scrollToBottom()
+			}
 		}
+	}
+	const scrolltolower = () => {
+		lower.value = true
+	}
+	const lowerThreshold = ref<number>(50)
+	
+	watch(() => propsData.ctrlPrintLoading ,(newVal) =>{
+		if(!newVal){
+			lowerThreshold.value = 50
+		}
+	})
+	const touchStatus = ref<boolean>(false)
+	const changeTouchStatus = (flag:boolean) => {
+		touchStatus.value = flag
 	}
 </script>
 

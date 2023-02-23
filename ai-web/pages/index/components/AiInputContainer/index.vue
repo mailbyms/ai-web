@@ -40,7 +40,7 @@
 			class="question-loading question-common ai-display-flex ai-align-items-center ai-justify-content-center" 
 			v-show="loading"
 		>
-			<view class="dot-flashing "></view>
+			<view class="dot-flashing"></view>
 		</view>
 	</view>
 </template>
@@ -78,6 +78,7 @@
 		textarea = document.getElementById('textarea');
 		input = document.getElementById('ai-input-container');
 		defaultHeight.value = input.clientHeight
+		console.log(input.clientHeight)
 		textarea.addEventListener('keydown',function(event){
 			setTimeout(() => {
 				state.prompt = textarea.innerText
@@ -91,6 +92,7 @@
 				sendMsg()
 				return false
 			}
+			emit('getInputHeight',defaultHeight.value)
 		})	
 		// #endif
 	}
@@ -103,7 +105,7 @@
 	const state = reactive <any>({
 		prompt:''
 	})
-	const emit = defineEmits(['sendMsg','updateInputStatus'])
+	const emit = defineEmits(['sendMsg','updateInputStatus','getInputHeight'])
 	
 	/*
 	* 发送数据
@@ -152,7 +154,10 @@
 	const inputFlag = ref<boolean>(false)
 	const focusInput = () => {
 		inputFlag.value = true
+		input = document.getElementById('ai-input-container');
+		defaultHeight.value = input.clientHeight
 		emit('updateInputStatus',true)
+		emit('getInputHeight',defaultHeight.value)
 	}
 	const blurInput = () => {
 		inputFlag.value = false

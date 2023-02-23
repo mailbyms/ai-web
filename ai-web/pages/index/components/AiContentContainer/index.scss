@@ -2,12 +2,15 @@
 	max-height: calc(100vh  - var(--safe-area-height) + 15rpx);
 	width: 100%;
 	padding-top: 20rpx;
-	overflow-y: auto;
+	// overflow-y: auto;
+	overflow: hidden;
 	background-color: #fff;
 	position: sticky;
 	top: 0;
 	.content{
-		height: auto;
+		// height: auto;
+		max-height: calc(100vh  - var(--safe-area-height) + 15rpx - 20rpx);
+		overflow-y: auto;
 	}
 	.common-item {
 		position: relative;
