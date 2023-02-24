@@ -5,13 +5,15 @@
 	z-index: 99;
 	bottom: 0;
 	background-color: #fff;
+	overflow: hidden;
 	.question-padding{
 		padding: 18rpx 0 ;
 	}
 	.question-input{
 		width: 500rpx;
-		min-height: 74rpx;
+		height: 74rpx;
 		max-height: 146rpx;
+		padding-top: 25rpx;
 		padding-left: 30rpx;
 		padding-right: 30rpx;
 		background: #F8F9FA;
@@ -27,9 +29,14 @@
 		&:focus:before{
 		    content:none;
 		}
+		
+	}
+	.question-input-placeholder{
+		// padding-top: 5rpx;
 	}
 	.question-common{
-		height: 74rpx;
+		// height: 74rpx;
+		height: 72rpx;
 		width: 130rpx;
 	}
 	.question-send{

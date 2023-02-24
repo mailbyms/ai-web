@@ -5,15 +5,15 @@ let baseUrl = "";
 let api_key = ""
 switch (env) {
   case 'dev':
-    baseUrl = "http://129.226.90.195:3000" //外测
+    baseUrl = "https://gpt.callwine.net" //外测
 	api_key = 'eoJKTi3A47iVdh3a8VFQs8DghBigPRXh2TPEHmaH'
     break;
   case 'pred':
-    baseUrl = "http://129.226.90.195:3000" //预发布
+    baseUrl = "https://gpt.callwine.net" //预发布
 	api_key = 'eoJKTi3A47iVdh3a8VFQs8DghBigPRXh2TPEHmaH'
     break;
   case 'pro':
-    baseUrl = "http://129.226.90.195:3000" //正式服
+    baseUrl = "https://gpt.callwine.net" //正式服
 	api_key = 'eoJKTi3A47iVdh3a8VFQs8DghBigPRXh2TPEHmaH'
     break;
 }

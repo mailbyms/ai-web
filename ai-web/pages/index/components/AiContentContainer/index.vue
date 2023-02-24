@@ -4,14 +4,15 @@
 -->
 <template>
 	<view 
-		:class="['ai-content-container border-box',!os() ? 
-		'ai-content-container-android':'']" 
+		:class="['ai-content-container border-box']" 
 		id="content-container"
-		:style="{paddingTop:paddingTop}"
+		:style="{paddingTop:paddingTop,maxHeight: `calc(100% - ${inputHeight}px)`}"
 		@touchmove="changeTouchStatus(true)"
 		@touchend="changeTouchStatus(false)"
 	>
-		<scroll-view class="content" id="content" :scroll-y="scrollY" @scroll="scroll" :scroll-top="scrollTop" @scrolltolower="scrolltolower" :lower-threshold="lowerThreshold">
+		<scroll-view class="content" id="content" :scroll-y="scrollY" @scroll="scroll" :scroll-top="scrollTop" @scrolltolower="scrolltolower" :lower-threshold="lowerThreshold"
+		:style="{maxHeight: `calc(100% - ${inputHeight}px)`}"
+		>
 			<view class="common-item border-box title ai-align-items-center ai-justify-content-center">
 				<text class="title-text ai-align-items-center ai-display-flex">我是智灵小助手，欢迎找我聊天呀 </text>
 				<img src="@/static/img/index/smile.png" class="title-img"/>
@@ -96,6 +97,7 @@
 		(val) => {
 			// #ifdef  H5
 			const contentContainer = document.getElementById('content-container');
+			// console.log('contentContainer',contentContainer)
 			if (val) {
 				scrollToBottom()
 				setTimeout(() => {

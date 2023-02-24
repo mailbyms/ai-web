@@ -7,38 +7,39 @@
 		:class="['ai-input-container w100 ai-display-flex ai-justify-content-space-between border-box ai-position-fixed']" id="ai-input-container"
 	>
 		<!-- 文本输入框 -->
-		// #ifdef  H5
-		<view 
+		<!-- <view 
 			class="question-input border-box question-padding" 
 			contenteditable="true" 
 			id="textarea" 
 			@focus="focusInput" 
 			@blur="blurInput"
+			type="submit"
 		>
-		</view>
-		// #endif
-		// #ifdef MP-WEIXIN
+		</view> -->
+		<!-- adjust-position -->
 		<textarea 
 			class="question-input border-box question-padding" 
-			:value="state.prompt" 
+			v-model="state.prompt" 
 			placeholder="请输入" 
 			confirm-type="done" 
-			:adjust-position="false"
+			:maxlength="-1"
+			:auto-height="true"
+			:disable-default-padding="true"
 			@focus="focusInput" 
 			@blur="blurInput"
+			@confirm="sendMsg"
 		/>
-		// #endif
 		<button 
 			class="question-send question-common" 
 			@click="sendMsg" 
-			v-show="!loading"
+			v-show="!loading && !ctrlPrintLoading"
 		>
 			发送
 		</button>
 		<!-- 过渡效果 -->
 		<view 
 			class="question-loading question-common ai-display-flex ai-align-items-center ai-justify-content-center" 
-			v-show="loading"
+			v-show="loading || ctrlPrintLoading"
 		>
 			<view class="dot-flashing"></view>
 		</view>
@@ -62,7 +63,9 @@
 		loading:boolean
 		focusFlag:boolean
 		addData?:string
+		ctrlPrintLoading:boolean
 	}
+	const emit = defineEmits(['sendMsg','updateInputStatus','getInputHeight','getKeyCode'])
 	let textarea = null;
 	let input = null
 	let defaultHeight = ref<number>(0)
@@ -74,48 +77,51 @@
 	 *监听输入框状态 
 	 */
 	const textareaListen = () => {
-		// #ifdef  H5
-		textarea = document.getElementById('textarea');
+		// textarea = document.getElementById('textarea');
 		input = document.getElementById('ai-input-container');
 		defaultHeight.value = input.clientHeight
 		console.log(input.clientHeight)
-		textarea.addEventListener('keydown',function(event){
-			setTimeout(() => {
-				state.prompt = textarea.innerText
-			})
-			if (event.ctrlKey && event.keyCode === 13) {
-				//ctrl+enter
-				textareaRange(textarea)
-			} else if (event.keyCode === 13) {
-				//enter
-				event.preventDefault() // 阻止浏览器默认换行操作
-				sendMsg()
-				return false
-			}
-			emit('getInputHeight',defaultHeight.value)
-		})	
-		// #endif
+		// alert(input.clientHeight)
+		emit('getInputHeight',defaultHeight.value)
+		// textarea.addEventListener('keydown',function(event){
+			// setTimeout(() => {
+			// 	state.prompt = textarea.innerText
+			// })
+			// alert(event.keyCode)
+			
+			// emit('getKeyCode',event.keyCode)
+			// if (event.ctrlKey && event.keyCode === 13) {
+			// 	//ctrl+enter
+			// } else if (event.keyCode === 13) {
+			// 	//enter
+			// 	sendMsg()
+			// 	event.preventDefault() // 阻止浏览器默认换行操作
+				
+				
+			// 	return false
+			// }
+			// emit('getInputHeight',defaultHeight.value)
+		// })	
 	}
 	
 	const propsData = withDefaults(defineProps<Props>(),{
 		loading:false, //过渡效果
 		focusFlag:false, //focus状态
-		addData:'' //添加的数据
+		addData:'' ,//添加的数据
+		ctrlPrintLoading:false
 	})
 	const state = reactive <any>({
 		prompt:''
 	})
-	const emit = defineEmits(['sendMsg','updateInputStatus','getInputHeight'])
+	
 	
 	/*
 	* 发送数据
 	*/
 	const sendMsg = () => {
-		textarea = document.getElementById('textarea');
-		state.prompt = textarea.innerText
-		if( state.prompt){
+		if( state.prompt.trim()){
+			if(propsData.loading || propsData.ctrlPrintLoading) return
 			console.log('发送数据', state.prompt)
-			textarea.innerHTML = ''
 			emit('sendMsg',state.prompt)
 			state.prompt = ''
 			return
@@ -124,29 +130,30 @@
 			title:'请输入内容哟~',
 			icon:'none'
 		})
+		state.prompt = ''
 	}
 	/**
 	 * 文本框光标状态
 	 */
-	const textareaRange = (el) => {
-		var range = document.createRange();
-		//返回用户当前的选区
-		var sel = document.getSelection();
-		//获取当前光标位置
-		var offset = sel.focusOffset
-		//div当前内容
-		var content = el.innerHTML
-		//添加换行符\n
-		el.innerHTML = content.slice(0, offset) + '\n' + content.slice(offset)
-		//设置光标为当前位置
-		range.setStart(el.childNodes[0], offset + 1);
-		//使得选区(光标)开始与结束位置重叠
-		range.collapse(true);
-		//移除现有其他的选区
-		sel.removeAllRanges();
-		//加入光标的选区
-		sel.addRange(range);
-	}
+	// const textareaRange = (el) => {
+	// 	var range = document.createRange();
+	// 	//返回用户当前的选区
+	// 	var sel = document.getSelection();
+	// 	//获取当前光标位置
+	// 	var offset = sel.focusOffset
+	// 	//div当前内容
+	// 	var content = el.innerHTML
+	// 	//添加换行符\n
+	// 	el.innerHTML = content.slice(0, offset) + '\n' + content.slice(offset)
+	// 	//设置光标为当前位置
+	// 	range.setStart(el.childNodes[0], offset + 1);
+	// 	//使得选区(光标)开始与结束位置重叠
+	// 	range.collapse(true);
+	// 	//移除现有其他的选区
+	// 	sel.removeAllRanges();
+	// 	//加入光标的选区
+	// 	sel.addRange(range);
+	// }
 	
 	/**
 	 * 处理输入框状态
@@ -168,13 +175,9 @@
 	 * 监听列表中点击点击的按钮,回显到输入框
 	 */
 	watch(()=> propsData.addData,(val) => {
-		// #ifdef  H5
-		textarea = document.getElementById('textarea');
 		if(val){
-			textarea.innerText = textarea.innerText + val
-			state.prompt = textarea.innerText
+			state.prompt = state.prompt + val
 		} 
-		// #endif
 	})
 </script>
 

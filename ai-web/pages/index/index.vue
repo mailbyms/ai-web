@@ -1,5 +1,5 @@
 <template>
-	<view class="index ai-position-fixed w100" >
+	<view class="index ai-position-fixed w100 h100">
 		<!-- <ai-header title="智灵AI助手"/> -->
 		<!-- 
 			内容组件
@@ -8,6 +8,7 @@
 			ctrlPrintLoading:控制打印时是否显示动画
 			focusFlag:输入框状态
 			listLength:列表长度
+			keyCode:键盘号
 			@addContent:添加提问内容到输入框
 		 -->
 		<ai-content-container 
@@ -17,6 +18,7 @@
 			:focusFlag="focusFlag"
 			:listLength="listLength"
 			:inputHeight="inputHeight"
+			:keyCode="keyCode"
 			@addContent="addContent"
 		/>
 		<!-- 
@@ -24,17 +26,23 @@
 			loading:是否展示加在动画
 			focusFlag:输入框状态
 			addData:列表添加的数据
+			ctrlPrintLoading:控制打印时是否显示动画
+			keyCode:键盘号
 			@sendMsg:发送信息
 			@updateInputStatus:检测输入框状态是focus/blur
 			@getInputHeight:获取键盘高度
+			@getKeyCode:键盘符
 		-->
 		<ai-input-container  
 			:loading="loading" 
 			:focusFlag="focusFlag"
 			:addData="addData"
+			:ctrlPrintLoading="ctrlPrintLoading"
+			:keyCode="keyCode"
 			@sendMsg="sendMsg"
 			@updateInputStatus="updateInputStatus"
 			@getInputHeight="getInputHeight"
+			@getKeyCode="getKeyCode"
 		/>
 	</view>
 </template>
@@ -86,8 +94,14 @@
 		// 	prompt:'您好，我想问下这份果冻'
 		// },
 		// {
+		// 	prompt:'您好，我想问下这份果冻'
+		// },
+		// {
 		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
 		// 	showCopy:true
+		// },
+		// {
+		// 	prompt:'您好，我想问下这份果冻'
 		// },
 		// {
 		// 	prompt:'您好，我想问下这份果冻'
@@ -100,14 +114,7 @@
 		// 	prompt:'您好，我想问下这份果冻'
 		// },
 		// {
-		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
-		// 	showCopy:true
-		// },
-		// {
-		// 	prompt:'您好，我想问下这份果冻'
-		// },
-		// {
-		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。111',
+		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。1111',
 		// 	showCopy:true
 		// }
 	])
@@ -146,15 +153,6 @@
 			console.log('err',err)
 			loading.value = false
 		})	
-		
-		
-		// loading.value = false
-		// let res = {
-		// 	text:'阿达大手大脚哭了多久啊看了几点开链接阿斯科利贷记卡手机的开机啊是肯德基卡设计大赛的阿达大手大脚哭了多久啊看了几点开链接阿斯科利贷记卡手机的开机啊是肯德基卡设计大赛的阿达大手大脚哭了多久啊看了几点开链接阿斯科利贷记卡手机的开机啊是肯德基卡设计大赛的阿达大手大脚哭了多久啊看了几点开链接阿斯科利贷记卡手机的开机啊是肯德基卡设计大赛的'
-		// }
-		// ctrlPrint(res.text,res.text.length)
-		// state.pid = res.id
-		// state.sessionId = res.conversationId
 	}
 	/**
 	 * 控制打印
@@ -187,6 +185,7 @@
 	const focusFlag = ref<boolean>(false)
 	const updateInputStatus = (status:boolean) => {
 		focusFlag.value = status
+		// const contentContainer = document.getElementById('content-container');
 		if(status){
 			document.body.addEventListener('touchmove', noScroll, { passive: false })
 		}else {
@@ -205,7 +204,7 @@
 	}
 	
 	//用于判断是否第一次进入页面
-	const firstLoad = ref<boolean>(false)
+	const firstLoad = ref<boolean>(true)
 	/**
 	 * 页面初始化调用接口
 	 */
@@ -230,6 +229,12 @@
 	const inputHeight = ref<number>(0)
 	const getInputHeight = (height:number) => {
 		inputHeight.value = height
+	}
+	
+	//键盘符号
+	const keyCode = ref<number>(0)
+	const getKeyCode = (code:number) => {
+		keyCode.value = code
 	}
 </script>
 

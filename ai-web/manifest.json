@@ -79,13 +79,13 @@
         "devServer" : {
             "https" : false,
             "proxy" : {
-                "/api" : {
-                    "target" : "http://129.226.90.195:3000",
+                "/chat" : {
+                    "target" : "https://gpt.callwine.net",
                     "changeOrigin" : true,
                     "secure" : false,
                     "ws" : false,
                     "pathRewrite" : {
-                        "^/api" : "/"
+                        "^/chat" : "/"
                     }
                 }
             }
