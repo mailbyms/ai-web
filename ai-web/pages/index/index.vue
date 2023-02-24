@@ -1,5 +1,5 @@
 <template>
-	<view class="index ai-position-fixed w100 h100">
+	<view class="index ai-position-fixed w100 " :style="{height: `calc(100vh - ${inputHeight}px)`}">
 		<!-- <ai-header title="智灵AI助手"/> -->
 		<!-- 
 			内容组件

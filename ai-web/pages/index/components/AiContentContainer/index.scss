@@ -3,18 +3,19 @@
 	// max-height: calc(100% - 67px);
 	width: 100%;
 	padding-top: 20rpx;
-	overflow-y: auto;
-	// overflow: hidden;
+	// overflow-y: auto;
+	overflow: hidden;
 	background-color: #fff;
 	position: sticky;
 	top: 0;
+	// height: auto;
 	.content{
 		// height: auto;
 		// max-height: calc(100vh  - var(--safe-area-height) + 15rpx - 20rpx);
 		// max-height: calc(100vh  - 67px);
 		// max-height: calc(100% - 67px);
 		// max-height: calc(100vh  - var(--safe-area-height) + 15rpx);
-		overflow-y: auto;
+		overflow-y: scroll;
 	}
 	.common-item {
 		position: relative;
