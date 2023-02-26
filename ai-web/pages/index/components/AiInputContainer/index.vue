@@ -34,14 +34,14 @@
 		// #endif
 		// #ifdef  MP-WEIXIN
 		 <textarea
-		 	class="question-input border-box question-padding question-input-weixin" 
+		 	class="question-input border-box question-padding question-input-wx" 
 			:style="{height:`${textareaHeight}px`}"
 		 	v-model="state.prompt" 
 		 	placeholder="请输入" 
 		 	confirm-type="done" 
 		 	:maxlength="-1"
 		 	:disable-default-padding="true"
-			:adjust-position="true"
+			:adjust-position="false"
 			:show-confirm-bar="false"
 		 	@focus="focusInput"
 		 	@blur="blurInput"
@@ -157,7 +157,6 @@
 	const inputFlag = ref<boolean>(false)
 	const bottom = ref<number>(0)
 	const focusInput = (e:any) => {
-		console.log('fi',e)
 		 // #ifdef  MP-WEIXIN
 			// = e.target.height.toString()
 			bottom.value = e.target.height

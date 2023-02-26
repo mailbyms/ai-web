@@ -20,22 +20,25 @@
 		border-radius: 6rpx;
 		font-size: var(--uni-font-size-base);
 		border:unset;
-		outline: unset;
+		outline: none;
 		overflow-y: auto;
-		&:empty:before{
-			content: '请输入 '; 
-			color: #CCCCCC; 
-		}
-		&:focus:before{
-		    content:none;
-		}
-		
+		// &:empty:before{
+		// 	content: '请输入 '; 
+		// 	color: #CCCCCC; 
+		// }
+		// &:focus:before{
+		//     content:none;
+		// }
+	}
+	.question-input-wx{
+		padding-top: 25rpx;
+		padding-left: 20rpx;
+		height: 78rpx;
 	}
 	.question-input-placeholder{
 		// padding-top: 5rpx;
 	}
 	.question-common{
-		// height: 74rpx;
 		height: 72rpx;
 		width: 130rpx;
 	}
@@ -51,6 +54,9 @@
 		background: #F7F7F7;
 	}
 }
-.question-input-weixin{
-	// margin-bottom: 38rpx;
+.question-input::-webkit-scrollbar {
+	  display: none;
+	  width: 0 !important;
+	  height: 0 !important;
+	  color: transparent;
 }
