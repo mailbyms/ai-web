@@ -94,22 +94,7 @@
 	 *监听输入框状态 
 	 */
 	const instance = getCurrentInstance();
-	const textareaListen = () => {
-		
-		// const queryInput = uni.createSelectorQuery().in(this);
-		// queryInput.select('#ai-input-container').boundingClientRect((data:UniNamespace.NodeInfo) => {
-		//   defaultHeight.value = data.height
-		//   emit('getInputHeight',defaultHeight.value)
-		// }).exec();
-		
-		
-		// const queryInput = uni.createSelectorQuery().in(instance);
-		// queryInput.select('#ai-input-container').boundingClientRect((data:UniNamespace.NodeInfo) => {
-		// 	console.log(data)
-		//   defaultHeight.value = data.height
-		//   emit('getInputHeight',defaultHeight.value)
-		// }).exec();
-		 
+	const textareaListen = () => { 
 		 //小程序方法
 		let query = uni.createSelectorQuery().in(instance);
 		query.select('#ai-input-container ').
@@ -135,6 +120,7 @@
 	* 发送数据
 	*/
 	const sendMsg = () => {
+		
 		if( state.prompt.trim()){
 			if(propsData.loading || propsData.ctrlPrintLoading) return
 			console.log('发送数据', state.prompt)
@@ -147,14 +133,14 @@
 			title:'请输入内容哟~',
 			icon:'none'
 		})
-		state.prompt = ''
+		state.prompt = null
 	}
 	
 	
 	/**
 	 * 处理输入框状态
 	 */
-	const inputFlag = ref<boolean>(false)
+	// const inputFlag = ref<boolean>(false)
 	const bottom = ref<number>(0)
 	const focusInput = (e:any) => {
 		 // #ifdef  MP-WEIXIN
@@ -209,6 +195,16 @@
 			state.prompt = state.prompt + val
 		} 
 	})
+	 // #ifdef  MP-WEIXIN
+	watch(() => state.prompt,(val) => {
+		console.log(val.indexOf('\n') != -1)
+		if(val.indexOf('\n') != -1){
+			uni.hideKeyboard() //收起软键盘
+			sendMsg()
+		}
+		
+	})
+	// #endif
 </script>
 
 <style lang="scss" scoped>
