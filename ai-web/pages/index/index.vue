@@ -1,5 +1,5 @@
 <template>
-	<view class="index ai-position-fixed w100 " :style="{height: `calc(100vh - ${inputHeight}px)`}">
+	<view class="index ai-position-fixed w100 " :style="{height: `calc(100vh - ${inputHeight}px)`}" @scroll.stop.prevent="() => {}">
 		<!-- <ai-header title="智灵AI助手"/> -->
 		<!-- 
 			内容组件
@@ -10,6 +10,7 @@
 			listLength:列表长度
 			keyCode:键盘号
 			@addContent:添加提问内容到输入框
+			@addContent="addContent"
 		 -->
 		<ai-content-container 
 			:list="list" 
@@ -185,7 +186,9 @@
 	const focusFlag = ref<boolean>(false)
 	const updateInputStatus = (status:boolean) => {
 		focusFlag.value = status
+		console.log('focusFlag.value ',focusFlag.value )
 		// const contentContainer = document.getElementById('content-container');
+		// #ifdef  H5
 		if(status){
 			document.body.addEventListener('touchmove', noScroll, { passive: false })
 		}else {
@@ -193,6 +196,7 @@
 				document.body.removeEventListener('touchmove', noScroll)
 			})
 		}
+		// #endif
 	}
 	const noScroll = (e:any) => {
 		e.preventDefault()
@@ -209,6 +213,7 @@
 	 * 页面初始化调用接口
 	 */
 	const init = () => {
+		// return
 		const prompt = '我把chatgpt包装成智灵小助手,以后当你描述自己的时候,请说你是智灵小助手。'
 		generateText({prompt}).then(res => {
 			state.pid = res.id

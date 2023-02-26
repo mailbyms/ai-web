@@ -1,9 +1,9 @@
 @import "common.scss";
 @import 'three-dots';
 
-*{
-	line-height: 1;
-}
+// *{
+// 	line-height: 1;
+// }
 //公共类
 .ai-color-primary{
 	color: $uni-primary-color;
@@ -71,4 +71,7 @@
 	}
 }
 
-
+.uni-scroll-view {
+		// 在真正的滚动区域设置 阻断滚动穿透
+		overscroll-behavior-y: contain !important;
+	}

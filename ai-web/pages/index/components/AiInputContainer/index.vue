@@ -5,6 +5,7 @@
 <template>
 	<view 
 		:class="['ai-input-container w100 ai-display-flex ai-justify-content-space-between border-box ai-position-fixed']" id="ai-input-container"
+		:style="{bottom:`${bottom}px`}"
 	>
 		<!-- 文本输入框 -->
 		<!-- <view 
@@ -16,7 +17,8 @@
 			type="submit"
 		>
 		</view> -->
-		<!-- adjust-position -->
+		<!-- @focus="focusInput" @input="focusInput" :auto-height="true"-->
+		// #ifdef  H5
 		<textarea 
 			class="question-input border-box question-padding" 
 			v-model="state.prompt" 
@@ -25,10 +27,28 @@
 			:maxlength="-1"
 			:auto-height="true"
 			:disable-default-padding="true"
-			@focus="focusInput" 
+			@focus="focusInput"
 			@blur="blurInput"
 			@confirm="sendMsg"
 		/>
+		// #endif
+		// #ifdef  MP-WEIXIN
+		 <textarea
+		 	class="question-input border-box question-padding question-input-weixin" 
+			:style="{height:`${textareaHeight}px`}"
+		 	v-model="state.prompt" 
+		 	placeholder="请输入" 
+		 	confirm-type="done" 
+		 	:maxlength="-1"
+		 	:disable-default-padding="true"
+			:adjust-position="true"
+			:show-confirm-bar="false"
+		 	@focus="focusInput"
+		 	@blur="blurInput"
+		 	@confirm="sendMsg"
+			@linechange="linechangeInput"
+		 />
+		 // #endif
 		<button 
 			class="question-send question-common" 
 			@click="sendMsg" 
@@ -54,11 +74,10 @@
 		defineEmits,
 		defineProps,
 		withDefaults,
-		watch
+		watch,
+		// nextTick
+		getCurrentInstance
 	} from "vue";
-	// import {
-	// 	GenerateTextRequest
-	// } from "@/model/pages/ModelIndex"
 	interface Props {
 		loading:boolean
 		focusFlag:boolean
@@ -66,44 +85,41 @@
 		ctrlPrintLoading:boolean
 	}
 	const emit = defineEmits(['sendMsg','updateInputStatus','getInputHeight','getKeyCode'])
-	let textarea = null;
-	let input = null
 	let defaultHeight = ref<number>(0)
+	
 	onMounted(() => {
 		textareaListen()
 	})
-	
 	/**
 	 *监听输入框状态 
 	 */
+	const instance = getCurrentInstance();
 	const textareaListen = () => {
-		// textarea = document.getElementById('textarea');
-		input = document.getElementById('ai-input-container');
-		defaultHeight.value = input.clientHeight
-		console.log(input.clientHeight)
-		// alert(input.clientHeight)
-		emit('getInputHeight',defaultHeight.value)
-		// textarea.addEventListener('keydown',function(event){
-			// setTimeout(() => {
-			// 	state.prompt = textarea.innerText
-			// })
-			// alert(event.keyCode)
-			
-			// emit('getKeyCode',event.keyCode)
-			// if (event.ctrlKey && event.keyCode === 13) {
-			// 	//ctrl+enter
-			// } else if (event.keyCode === 13) {
-			// 	//enter
-			// 	sendMsg()
-			// 	event.preventDefault() // 阻止浏览器默认换行操作
-				
-				
-			// 	return false
-			// }
-			// emit('getInputHeight',defaultHeight.value)
-		// })	
+		
+		// const queryInput = uni.createSelectorQuery().in(this);
+		// queryInput.select('#ai-input-container').boundingClientRect((data:UniNamespace.NodeInfo) => {
+		//   defaultHeight.value = data.height
+		//   emit('getInputHeight',defaultHeight.value)
+		// }).exec();
+		
+		
+		// const queryInput = uni.createSelectorQuery().in(instance);
+		// queryInput.select('#ai-input-container').boundingClientRect((data:UniNamespace.NodeInfo) => {
+		// 	console.log(data)
+		//   defaultHeight.value = data.height
+		//   emit('getInputHeight',defaultHeight.value)
+		// }).exec();
+		 
+		 //小程序方法
+		let query = uni.createSelectorQuery().in(instance);
+		query.select('#ai-input-container ').
+		fields({ size:true,dataset: true, rect: true, id: true,context:true },
+		(e:any) => {});
+		query.exec(eles => {
+			defaultHeight.value = eles[0].height
+			emit('getInputHeight',defaultHeight.value)
+		})
 	}
-	
 	const propsData = withDefaults(defineProps<Props>(),{
 		loading:false, //过渡效果
 		focusFlag:false, //focus状态
@@ -124,6 +140,7 @@
 			console.log('发送数据', state.prompt)
 			emit('sendMsg',state.prompt)
 			state.prompt = ''
+			textareaHeight.value = null
 			return
 		}
 		uni.showToast({
@@ -132,45 +149,59 @@
 		})
 		state.prompt = ''
 	}
-	/**
-	 * 文本框光标状态
-	 */
-	// const textareaRange = (el) => {
-	// 	var range = document.createRange();
-	// 	//返回用户当前的选区
-	// 	var sel = document.getSelection();
-	// 	//获取当前光标位置
-	// 	var offset = sel.focusOffset
-	// 	//div当前内容
-	// 	var content = el.innerHTML
-	// 	//添加换行符\n
-	// 	el.innerHTML = content.slice(0, offset) + '\n' + content.slice(offset)
-	// 	//设置光标为当前位置
-	// 	range.setStart(el.childNodes[0], offset + 1);
-	// 	//使得选区(光标)开始与结束位置重叠
-	// 	range.collapse(true);
-	// 	//移除现有其他的选区
-	// 	sel.removeAllRanges();
-	// 	//加入光标的选区
-	// 	sel.addRange(range);
-	// }
+	
 	
 	/**
 	 * 处理输入框状态
 	 */
 	const inputFlag = ref<boolean>(false)
-	const focusInput = () => {
-		inputFlag.value = true
-		input = document.getElementById('ai-input-container');
-		defaultHeight.value = input.clientHeight
-		emit('updateInputStatus',true)
-		emit('getInputHeight',defaultHeight.value)
+	const bottom = ref<number>(0)
+	const focusInput = (e:any) => {
+		console.log('fi',e)
+		 // #ifdef  MP-WEIXIN
+			// = e.target.height.toString()
+			bottom.value = e.target.height
+		// #endif
+		// 
+		// inputFlag.value = true
+		//web
+		// const queryInput = uni.createSelectorQuery().in(this);
+		// queryInput.select('#ai-input-container').boundingClientRect((data:UniNamespace.NodeInfo) => {
+		//   defaultHeight.value = data.height
+		//   emit('getInputHeight',defaultHeight.value)
+		//   emit('updateInputStatus',true)
+		// }).exec();
+		
+		
+		 // #ifdef  H5
+		let query = uni.createSelectorQuery().in(instance);
+		query.select('#ai-input-container ').
+		fields({ size:true,dataset: true, rect: true, id: true,context:true },
+		(e:any) => {console.log(e)});
+		query.exec(eles => {
+			defaultHeight.value = eles[0].height
+			emit('getInputHeight',defaultHeight.value)
+			emit('updateInputStatus',true)
+		})
+		 // #endif
+
 	}
 	const blurInput = () => {
-		inputFlag.value = false
+		// #ifdef  H5
 		emit('updateInputStatus',false)
+		 // #endif
+		// #ifdef  MP-WEIXIN
+			bottom.value = 0
+		// #endif
 	}
-	
+	const textareaHeight = ref<number>(null)
+	const linechangeInput = (event:any) => {
+		if(event.detail.lineCount === 1){
+			textareaHeight.value = null
+			return
+		}
+		textareaHeight.value = event.detail.lineCount * event.detail.height
+	}
 	/**
 	 * 监听列表中点击点击的按钮,回显到输入框
 	 */
