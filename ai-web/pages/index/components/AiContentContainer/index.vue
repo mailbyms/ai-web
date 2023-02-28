@@ -1,7 +1,6 @@
 <!-- 
 	模块名称：AI问答内容组件
 	模块作者：tony
-	,maxHeight: `calc(100% - ${inputHeight}px)`
 -->
 <template>
 	<view 
@@ -113,11 +112,9 @@
 				if (val) {
 					setTimeout(() => {
 						scrollY.value = false
-						// console.log('propsData.focusFlag-true',scrollY.value);
 					},50)
 				}else {
 					scrollY.value = true
-					// console.log('propsData.focusFlag-false',scrollY.value);
 				}
 				if (val && os()) {
 					if (uni.getWindowInfo().windowHeight > eles[0].height && eles[0].height !==
@@ -199,7 +196,6 @@
 		} else if(newVal[newVal.length - 1].prompt){
 			scrollToBottom()
 		}
-		
 	},
 	{
 		deep:true
@@ -228,10 +224,8 @@
 		fields({ size:true,dataset: true, rect: true, id: true,context:true },
 		(e:any) => {console.log(e)});
 		query.exec(ele => {
-			
 			const result = ele[0]
 			if((result.bottom + status.detail.scrollTop -  result.height) < lowerThreshold.value){
-				// console.log((result.bottom + status.detail.scrollTop -  result.height) , lowerThreshold.value);
 				lower.value = true
 				if(propsData.ctrlPrintLoading && !touchStatus.value){
 					console.log('!touchStatus.value',!touchStatus.value);
@@ -255,7 +249,7 @@
 	const touchStatus = ref<boolean>(false)
 	const changeTouchStatus = (flag:boolean) => {
 		touchStatus.value = flag
-		console.log('changeTouchStatus',flag)
+		// console.log('changeTouchStatus',flag)
 	}
 	
 	const clientHeight = ref<number>(0)

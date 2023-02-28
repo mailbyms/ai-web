@@ -75,7 +75,6 @@
 		defineProps,
 		withDefaults,
 		watch,
-		// nextTick
 		getCurrentInstance
 	} from "vue";
 	interface Props {
@@ -146,18 +145,7 @@
 		 // #ifdef  MP-WEIXIN
 			// = e.target.height.toString()
 			bottom.value = e.target.height
-		// #endif
-		// 
-		// inputFlag.value = true
-		//web
-		// const queryInput = uni.createSelectorQuery().in(this);
-		// queryInput.select('#ai-input-container').boundingClientRect((data:UniNamespace.NodeInfo) => {
-		//   defaultHeight.value = data.height
-		//   emit('getInputHeight',defaultHeight.value)
-		//   emit('updateInputStatus',true)
-		// }).exec();
-		
-		
+		// #endif		
 		 // #ifdef  H5
 		let query = uni.createSelectorQuery().in(instance);
 		query.select('#ai-input-container ').

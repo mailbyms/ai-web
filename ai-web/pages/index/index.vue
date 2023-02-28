@@ -63,61 +63,6 @@
 		pid: '' //消息id
 	})
 	const list = reactive<GenerateTextList[]>([
-		// {
-		// 	prompt:'您好，我想问下这份果冻'
-		// },
-		// {
-		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
-		// 	showCopy:true
-		// },
-		// {
-		// 	prompt:'您好，我想问下这份果冻'
-		// },
-		// {
-		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
-		// 	showCopy:true
-		// },
-		// {
-		// 	prompt:'您好，我想问下这份果冻'
-		// },
-		// {
-		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
-		// 	showCopy:true
-		// },
-		// {
-		// 	prompt:'您好，我想问下这份果冻'
-		// },
-		// {
-		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
-		// 	showCopy:true
-		// },
-		// {
-		// 	prompt:'您好，我想问下这份果冻'
-		// },
-		// {
-		// 	prompt:'您好，我想问下这份果冻'
-		// },
-		// {
-		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
-		// 	showCopy:true
-		// },
-		// {
-		// 	prompt:'您好，我想问下这份果冻'
-		// },
-		// {
-		// 	prompt:'您好，我想问下这份果冻'
-		// },
-		// {
-		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
-		// 	showCopy:true
-		// },
-		// {
-		// 	prompt:'您好，我想问下这份果冻'
-		// },
-		// {
-		// 	text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。1111',
-		// 	showCopy:true
-		// }
 	])
 	const listLength = ref<number>(list.length)
 	//控制过渡效果
@@ -187,7 +132,6 @@
 	const updateInputStatus = (status:boolean) => {
 		focusFlag.value = status
 		console.log('focusFlag.value ',focusFlag.value )
-		// const contentContainer = document.getElementById('content-container');
 		// #ifdef  H5
 		if(status){
 			document.body.addEventListener('touchmove', noScroll, { passive: false })
@@ -213,7 +157,6 @@
 	 * 页面初始化调用接口
 	 */
 	const init = () => {
-		// return
 		const prompt = '我把chatgpt包装成智灵小助手,以后当你描述自己的时候,请说你是智灵小助手。'
 		generateText({prompt}).then(res => {
 			state.pid = res.id
