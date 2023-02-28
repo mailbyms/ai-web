@@ -12,8 +12,6 @@
 		@touchend="changeTouchStatus(false)"
 	>
 			<scroll-view class="content"  :scroll-y="true" :scroll-top="scrollTop"  
-			:lower-threshold="lowerThreshold" @scrolltolower="scrolltolower"
-			@scroll="scroll"
 			:style="{height: `calc(${clientHeight}px - ${inputHeight}px - 20rpx)`}"
 			>
 				<view id="content">
@@ -180,18 +178,17 @@
 	 */
 	watch(() => propsData.list,(newVal) => {		
 		let query = uni.createSelectorQuery().in(instance);
-		
-		if(newVal[newVal.length - 1].text  && lower.value && !touchStatus.value){
+		if(newVal[newVal.length - 1].text   && !touchStatus.value){
 			query.selectAll('.text-align-left').
 			fields({ size:true,dataset: true, rect: true, id: true,context:true },
 			(e:any) => {});
 			query.exec(eles => {
 				const list = eles[0]
 				const lastAnswer = list[list.length - 1]
-				// console.log('query',lastAnswer.height);
-				if(lastAnswer.height > 50){
-						lowerThreshold.value = lastAnswer.height
-				}else {
+				
+				
+				if(clientHeight.value >= lastAnswer.bottom || clientHeight.value >= lastAnswer.top+ 30){
+					console.log('query',lastAnswer.top,lastAnswer.bottom,clientHeight.value,lastAnswer.height);
 					scrollToBottom()
 				}
 			})
@@ -220,47 +217,6 @@
 		
 	}
 	
-	const lower = ref<boolean>(false)
-	/**
-	 * 滑动
-	 * 页面在滑动过程中的状态处理,滑动的时候,问题打印中的时候,不滚动到底部
-	 * @param {object} status
-	 * */
-	const scroll = (status:any) => {
-		let query = uni.createSelectorQuery().in(instance);
-		query.select('#content').
-		fields({ size:true,dataset: true, rect: true, id: true,context:true },
-		(e:any) => {console.log(e)});
-		query.exec(ele => {
-			const result = ele[0]
-			if((result.bottom + status.detail.scrollTop -  result.height) < lowerThreshold.value){
-				lower.value = true
-				if(propsData.ctrlPrintLoading && !touchStatus.value){
-					console.log('!touchStatus.value',!touchStatus.value);
-					scrollToBottom()
-				}
-			}else {
-				lower.value = false
-			}
-		})
-	}
-	
-	/**
-	 * 滑动到底部 
-	 */
-	const scrolltolower = () => {
-		lower.value = true
-	}
-	
-	/**
-	 * 监听打印状态,打印结束重置列表距离底部高度
-	 */
-	const lowerThreshold = ref<number>(50)
-	watch(() => propsData.ctrlPrintLoading ,(newVal) =>{
-		if(!newVal){
-			lowerThreshold.value = 50
-		}
-	})
 	
 	/**
 	 * 判断是否是触摸页面

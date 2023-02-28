@@ -64,6 +64,61 @@
 	})
 	//问答数据
 	const list = reactive<GenerateTextList[]>([
+		// {
+		// 			prompt:'您好，我想问下这份果冻'
+		// 		},
+		// 		{
+		// 			text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
+		// 			showCopy:true
+		// 		},
+		// 		{
+		// 			prompt:'您好，我想问下这份果冻'
+		// 		},
+		// 		{
+		// 			text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
+		// 			showCopy:true
+		// 		},
+		// 		{
+		// 			prompt:'您好，我想问下这份果冻'
+		// 		},
+		// 		{
+		// 			text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
+		// 			showCopy:true
+		// 		},
+		// 		{
+		// 			prompt:'您好，我想问下这份果冻'
+		// 		},
+		// 		{
+		// 			text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
+		// 			showCopy:true
+		// 		},
+		// 		{
+		// 			prompt:'您好，我想问下这份果冻'
+		// 		},
+		// 		{
+		// 			prompt:'您好，我想问下这份果冻'
+		// 		},
+		// 		{
+		// 			text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
+		// 			showCopy:true
+		// 		},
+		// 		{
+		// 			prompt:'您好，我想问下这份果冻'
+		// 		},
+		// 		{
+		// 			prompt:'您好，我想问下这份果冻'
+		// 		},
+		// 		{
+		// 			text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。',
+		// 			showCopy:true
+		// 		},
+		// 		{
+		// 			prompt:'您好，我想问下这份果冻'
+		// 		},
+		// 		{
+		// 			text:'您好，有什么问题可以直接咨询我哦包括商品规格，储存方式等。1111',
+		// 			showCopy:true
+		// 		}
 	])
 	//问答数据长度
 	const listLength = ref<number>(list.length)
@@ -77,6 +132,11 @@
 	 * @param {boolean} isPush. 是否添加到列表
 	 */
 	const sendMsg = (msg:string, isPush = true) => {
+		// const res = {
+		// 	text:'sad哈萨克打算离婚的卡拉斯京看来大家阿斯科利大家阿克琉斯觉得卡拉斯京的卡拉斯京打开链接阿斯科利大家阿斯科利大家卡拉斯京的卡拉斯京的卡拉斯京打开拉家带口啦睡觉的考拉上sad哈萨克打算离婚的卡拉斯京看来大家阿斯科利大家阿克琉斯觉得卡拉斯京的卡拉斯京打开链接阿斯科利大家阿斯科利大家卡拉斯京的卡拉斯京的卡拉斯京打开拉家带口啦睡觉的考拉上'
+		// }
+		// ctrlPrint(res.text,res.text.length)
+		// return
 		loading.value = true
 		addData.value = ''
 		const obj:GenerateTextRequest = {
@@ -170,6 +230,8 @@
 	 * 页面初始化调用接口
 	 */
 	const init = () => {
+		// firstLoad.value = false
+		// return
 		const prompt = '我把chatgpt包装成智灵小助手,以后当你描述自己的时候,请说你是智灵小助手。'
 		generateText({prompt}).then(res => {
 			state.pid = res.id
