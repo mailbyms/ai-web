@@ -7,17 +7,6 @@
 		:class="['ai-input-container w100 ai-display-flex ai-justify-content-space-between border-box ai-position-fixed']" id="ai-input-container"
 		:style="{bottom:`${bottom}px`}"
 	>
-		<!-- 文本输入框 -->
-		<!-- <view 
-			class="question-input border-box question-padding" 
-			contenteditable="true" 
-			id="textarea" 
-			@focus="focusInput" 
-			@blur="blurInput"
-			type="submit"
-		>
-		</view> -->
-		<!-- @focus="focusInput" @input="focusInput" :auto-height="true"-->
 		// #ifdef  H5
 		<textarea 
 			class="question-input border-box question-padding" 
@@ -132,20 +121,18 @@
 			title:'请输入内容哟~',
 			icon:'none'
 		})
-		state.prompt = null
+		state.prompt = ''
 	}
 	
 	
 	/**
 	 * 处理输入框状态
 	 */
-	// const inputFlag = ref<boolean>(false)
 	const bottom = ref<number>(0)
 	const focusInput = (e:any) => {
 		 // #ifdef  MP-WEIXIN
-			// = e.target.height.toString()
 			bottom.value = e.target.height
-		// #endif		
+		 // #endif		
 		 // #ifdef  H5
 		let query = uni.createSelectorQuery().in(instance);
 		query.select('#ai-input-container ').
@@ -183,6 +170,8 @@
 			state.prompt = state.prompt + val
 		} 
 	})
+	
+	//微信小程序按回车按钮,判断是否换行并发送
 	 // #ifdef  MP-WEIXIN
 	watch(() => state.prompt,(val) => {
 		console.log(val.indexOf('\n') != -1)

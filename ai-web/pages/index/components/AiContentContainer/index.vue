@@ -175,7 +175,9 @@
 	}
 	
 	
-	//
+	/**
+	 * 监听列表是否被修改,并判断是否滚动到底部附近的位置,是就滚动到底部
+	 */
 	watch(() => propsData.list,(newVal) => {		
 		let query = uni.createSelectorQuery().in(instance);
 		
@@ -217,7 +219,13 @@
 		})
 		
 	}
+	
 	const lower = ref<boolean>(false)
+	/**
+	 * 滑动
+	 * 页面在滑动过程中的状态处理,滑动的时候,问题打印中的时候,不滚动到底部
+	 * @param {object} status
+	 * */
 	const scroll = (status:any) => {
 		let query = uni.createSelectorQuery().in(instance);
 		query.select('#content').
@@ -236,22 +244,35 @@
 			}
 		})
 	}
+	
+	/**
+	 * 滑动到底部 
+	 */
 	const scrolltolower = () => {
 		lower.value = true
 	}
-	const lowerThreshold = ref<number>(50)
 	
+	/**
+	 * 监听打印状态,打印结束重置列表距离底部高度
+	 */
+	const lowerThreshold = ref<number>(50)
 	watch(() => propsData.ctrlPrintLoading ,(newVal) =>{
 		if(!newVal){
 			lowerThreshold.value = 50
 		}
 	})
+	
+	/**
+	 * 判断是否是触摸页面
+	 */
 	const touchStatus = ref<boolean>(false)
 	const changeTouchStatus = (flag:boolean) => {
 		touchStatus.value = flag
-		// console.log('changeTouchStatus',flag)
 	}
 	
+	/**
+	 * 获取页面可视区域
+	 */
 	const clientHeight = ref<number>(0)
 	onMounted(() => {
 		clientHeight.value = uni.getWindowInfo().windowHeight

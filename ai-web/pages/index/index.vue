@@ -58,12 +58,14 @@
 	import {generateText} from "@/http/index";
 	
 	const state = reactive < GenerateTextRequest > ({
-		prompt: '',
+		prompt: '', //发送的内容
 		sessionId: '', //会话id
 		pid: '' //消息id
 	})
+	//问答数据
 	const list = reactive<GenerateTextList[]>([
 	])
+	//问答数据长度
 	const listLength = ref<number>(list.length)
 	//控制过渡效果
 	const loading = ref<boolean>(false)
@@ -90,7 +92,7 @@
 		}
 		if(firstLoad.value) return
 		generateText(obj).then(res => {
-			console.log('结果',res.text)
+			// console.log('结果',res.text)
 			loading.value = false
 			ctrlPrint(res.text,res.text.length)
 			state.pid = res.id
@@ -128,14 +130,20 @@
 		},100)
 	}
 	
+	
 	const focusFlag = ref<boolean>(false)
+	/**
+	 * 键盘focus状态
+	 * @param {boolean} status 状态
+	 * */
 	const updateInputStatus = (status:boolean) => {
 		focusFlag.value = status
-		console.log('focusFlag.value ',focusFlag.value )
 		// #ifdef  H5
 		if(status){
+			//禁止滚动
 			document.body.addEventListener('touchmove', noScroll, { passive: false })
 		}else {
+			//允许滚动
 			nextTick(() => {
 				document.body.removeEventListener('touchmove', noScroll)
 			})
@@ -146,7 +154,12 @@
 		e.preventDefault()
 	}
 	
+	
 	const addData = ref<string>('')
+	/**
+	 * 点击问题添加内容
+	 * @param {string} prompt 问题内容
+	 */
 	const addContent = (prompt:string) => {
 		addData.value += prompt
 	}
@@ -174,13 +187,22 @@
 	}
 	init()
 	
+	
 	const inputHeight = ref<number>(0)
+	/**
+	 * 获取输入框的高度
+	 * @param {number} height 高度
+	 */
 	const getInputHeight = (height:number) => {
 		inputHeight.value = height
 	}
 	
-	//键盘符号
+
 	const keyCode = ref<number>(0)
+	/**
+	 * 获取键盘符号
+	 * @param {number} code 键盘号
+	 */
 	const getKeyCode = (code:number) => {
 		keyCode.value = code
 	}
